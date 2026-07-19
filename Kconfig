@@ -3,3 +3,12 @@ DT_COMPAT_ZMK_BEHAVIOR_MOMENTARY_LAYER_LOCK := zmk,behavior-momentary-layer-lock
 config ZMK_BEHAVIOR_MOMENTARY_LAYER_LOCK
     bool
     default $(dt_compat_enabled,$(DT_COMPAT_ZMK_BEHAVIOR_MOMENTARY_LAYER_LOCK))
+
+DT_COMPAT_ZMK_BATTERY_NRF_VDDH_CURVE := zmk,battery-nrf-vddh-curve
+
+config ZMK_BATTERY_NRF_VDDH_CURVE
+    bool
+    default $(dt_compat_enabled,$(DT_COMPAT_ZMK_BATTERY_NRF_VDDH_CURVE))
+    select ADC
+    select ZMK_BATTERY
+    depends on SENSOR

@@ -46,3 +46,11 @@ nice_view_spi: &spi0 {
 &pro_micro_i2c {
     status = "disabled";
 };
+
+// Point the battery node at the vendored driver: identical VDDH
+// measurement, but mV -> percent follows a real LiPo discharge curve
+// instead of upstream's straight line, and the reading is a median of
+// three ADC samples. See src/sensors/battery_nrf_vddh_curve.c.
+&vbatt {
+    compatible = "zmk,battery-nrf-vddh-curve";
+};

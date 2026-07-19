@@ -1,0 +1,9 @@
+# Copyright (c) 2021 The ZMK Contributors
+# SPDX-License-Identifier: MIT
+
+description: |
+  Battery SoC monitoring using nRF VDDH, converting voltage to percent
+  through a LiPo discharge-curve lookup. Vendored replacement for
+  zmk,battery-nrf-vddh; see src/sensors/battery_nrf_vddh_curve.c.
+
+compatible: "zmk,battery-nrf-vddh-curve"
