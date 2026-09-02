@@ -18,13 +18,21 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 #include <zmk/events/battery_state_changed.h>
 #include <zmk/events/ble_active_profile_changed.h>
 #include <zmk/events/endpoint_changed.h>
-#include <zmk/events/wpm_state_changed.h>
 #include <zmk/events/layer_state_changed.h>
 #include <zmk/usb.h>
 #include <zmk/ble.h>
 #include <zmk/endpoints.h>
 #include <zmk/keymap.h>
+
+#if defined(CONFIG_VISTA508_WIDGET_TOP_WPM)
 #include <zmk/wpm.h>
+#include <zmk/events/wpm_state_changed.h>
+#endif
+
+#if defined(CONFIG_VISTA508_WIDGET_TOP_MODS_ART)
+#include <zmk/hid.h>
+#include <zmk/events/keycode_state_changed.h>
+#endif
 
 static sys_slist_t widgets = SYS_SLIST_STATIC_INIT(&widgets);
 
@@ -40,37 +48,32 @@ struct layer_status_state {
     const char *label;
 };
 
+#if defined(CONFIG_VISTA508_WIDGET_TOP_WPM)
 struct wpm_status_state {
     uint8_t wpm;
 };
+#endif
 
-static void draw_top(lv_obj_t *widget, const struct status_state *state) {
-    lv_obj_t *canvas = lv_obj_get_child(widget, 0);
+#if defined(CONFIG_VISTA508_WIDGET_TOP_MODS_ART)
+struct mods_status_state {
+    uint8_t mods;
+};
+#endif
 
+// Header strip shared by both variants: battery + connection icon in the
+// top ~20 px of the canvas. Kept as its own helper so the MODS_ART variant
+// can redraw it without touching the art region below.
+static void draw_header(lv_obj_t *canvas, const struct status_state *state) {
     lv_draw_label_dsc_t label_dsc;
     init_label_dsc(&label_dsc, LVGL_FOREGROUND, &lv_font_montserrat_16, LV_TEXT_ALIGN_RIGHT);
-    lv_draw_label_dsc_t label_dsc_wpm;
-    init_label_dsc(&label_dsc_wpm, LVGL_FOREGROUND, &lv_font_montserrat_12, LV_TEXT_ALIGN_RIGHT);
-    lv_draw_rect_dsc_t rect_black_dsc;
-    init_rect_dsc(&rect_black_dsc, LVGL_BACKGROUND);
-    lv_draw_rect_dsc_t rect_white_dsc;
-    init_rect_dsc(&rect_white_dsc, LVGL_FOREGROUND);
-    lv_draw_line_dsc_t line_thick_dsc;
-    init_line_dsc(&line_thick_dsc, LVGL_FOREGROUND, 2);
-    lv_draw_arc_dsc_t arc_dsc;
-    init_arc_dsc(&arc_dsc, LVGL_FOREGROUND, 2);
-    lv_draw_line_dsc_t line_dsc;
-    init_line_dsc(&line_dsc, LVGL_FOREGROUND, 1);
+    lv_draw_rect_dsc_t rect_bg_dsc;
+    init_rect_dsc(&rect_bg_dsc, LVGL_BACKGROUND);
 
-    // Fill background
-    canvas_draw_rect(canvas, 0, 0, CANVAS_SIZE, CANVAS_SIZE, &rect_black_dsc);
+    canvas_draw_rect(canvas, 0, 0, CANVAS_SIZE, 20, &rect_bg_dsc);
 
-    // Draw battery
     draw_battery(canvas, state);
 
-    // Draw output status
     char output_text[10] = {};
-
     switch (state->selected_endpoint.transport) {
     case ZMK_TRANSPORT_USB:
         strcat(output_text, LV_SYMBOL_USB);
@@ -86,15 +89,40 @@ static void draw_top(lv_obj_t *widget, const struct status_state *state) {
             strcat(output_text, LV_SYMBOL_SETTINGS);
         }
         break;
+    default:
+        // transport only holds USB or BLE when healthy; anything else
+        // is a corrupted snapshot. Make it visible instead of blank.
+        strcat(output_text, "?");
+        break;
     }
-
     canvas_draw_text(canvas, 0, 0, CANVAS_SIZE, &label_dsc, output_text);
+}
 
-    // Draw WPM
+#if defined(CONFIG_VISTA508_WIDGET_TOP_WPM)
+
+// Original top-canvas layout: header + WPM graph box occupying most of the
+// visible strip. Full-canvas clear on every update.
+static void draw_top(lv_obj_t *widget, const struct status_state *state) {
+    lv_obj_t *canvas = lv_obj_get_child(widget, 0);
+
+    lv_draw_label_dsc_t label_dsc_wpm;
+    init_label_dsc(&label_dsc_wpm, LVGL_FOREGROUND, &lv_font_montserrat_12, LV_TEXT_ALIGN_RIGHT);
+    lv_draw_rect_dsc_t rect_bg_dsc;
+    init_rect_dsc(&rect_bg_dsc, LVGL_BACKGROUND);
+    lv_draw_line_dsc_t line_thick_dsc;
+    init_line_dsc(&line_thick_dsc, LVGL_FOREGROUND, 2);
+    lv_draw_arc_dsc_t arc_dsc;
+    init_arc_dsc(&arc_dsc, LVGL_FOREGROUND, 2);
+    lv_draw_line_dsc_t line_dsc;
+    init_line_dsc(&line_dsc, LVGL_FOREGROUND, 1);
+
+    canvas_draw_rect(canvas, 0, 0, CANVAS_SIZE, CANVAS_SIZE, &rect_bg_dsc);
+
+    draw_header(canvas, state);
+
     const int WPM_HEIGHT = 82;
     const uint8_t cornerRadius = 4;
     const uint8_t yOffset = 21;
-    // Draw the WPM Boundary - top
     lv_point_t boxPoints[2];
     boxPoints[0].x = 1 + cornerRadius;
     boxPoints[0].y = yOffset;
@@ -103,13 +131,11 @@ static void draw_top(lv_obj_t *widget, const struct status_state *state) {
     canvas_draw_line(canvas, boxPoints, 2, &line_thick_dsc);
     canvas_draw_arc(canvas, boxPoints[0].x, boxPoints[0].y + cornerRadius, cornerRadius, 180, 270, &arc_dsc);
     canvas_draw_arc(canvas, boxPoints[1].x, boxPoints[1].y + cornerRadius, cornerRadius, 270, 0, &arc_dsc);
-    // Draw the WPM Boundary - bottom
     boxPoints[0].y = yOffset + WPM_HEIGHT;
     boxPoints[1].y = yOffset + WPM_HEIGHT;
     canvas_draw_line(canvas, boxPoints, 2, &line_thick_dsc);
     canvas_draw_arc(canvas, boxPoints[0].x, boxPoints[0].y - cornerRadius, cornerRadius, 90, 180, &arc_dsc);
     canvas_draw_arc(canvas, boxPoints[1].x, boxPoints[1].y - cornerRadius, cornerRadius, 0, 90, &arc_dsc);
-    // Draw the sides
     boxPoints[0].x = 1;
     boxPoints[0].y = cornerRadius + yOffset;
     boxPoints[1].x = 1;
@@ -125,7 +151,6 @@ static void draw_top(lv_obj_t *widget, const struct status_state *state) {
 
     int max = 0;
     int min = 256;
-
     for (int i = 0; i < WPM_SAMPLES; i++) {
         if (state->wpm[i] > max) {
             max = state->wpm[i];
@@ -134,7 +159,6 @@ static void draw_top(lv_obj_t *widget, const struct status_state *state) {
             min = state->wpm[i];
         }
     }
-
     int range = max - min;
     if (range == 0) {
         range = 1;
@@ -148,6 +172,135 @@ static void draw_top(lv_obj_t *widget, const struct status_state *state) {
     }
     canvas_draw_line(canvas, points, WPM_SAMPLES, &line_dsc);
 }
+
+#elif defined(CONFIG_VISTA508_WIDGET_TOP_MODS_ART)
+
+// Split top canvas (visible rows 0..111):
+//   0..19    header  - battery + connection icon
+//   20..87   art     - static procedural landscape, drawn once at init
+//   88..111  mods    - four boxes tracking held-modifier state
+#define ART_Y_TOP  20
+#define ART_Y_BOT  87
+#define MODS_Y_TOP 88
+#define MODS_Y_BOT 111
+
+// Simple hand-picked landscape: crescent-ish moon, a handful of stars, a
+// mountain silhouette and a horizon. Everything is drawn from primitives -
+// no image asset, no flash cost beyond a couple of coordinate arrays.
+static void draw_art(lv_obj_t *canvas) {
+    lv_draw_rect_dsc_t rect_bg_dsc;
+    init_rect_dsc(&rect_bg_dsc, LVGL_BACKGROUND);
+    lv_draw_rect_dsc_t rect_fg_dsc;
+    init_rect_dsc(&rect_fg_dsc, LVGL_FOREGROUND);
+    lv_draw_line_dsc_t line_dsc;
+    init_line_dsc(&line_dsc, LVGL_FOREGROUND, 1);
+    lv_draw_line_dsc_t line_thick_dsc;
+    init_line_dsc(&line_thick_dsc, LVGL_FOREGROUND, 2);
+    lv_draw_arc_dsc_t arc_moon_full;
+    init_arc_dsc(&arc_moon_full, LVGL_FOREGROUND, 10);
+    lv_draw_arc_dsc_t arc_moon_cut;
+    init_arc_dsc(&arc_moon_cut, LVGL_BACKGROUND, 10);
+
+    canvas_draw_rect(canvas, 0, ART_Y_TOP, CANVAS_SIZE, ART_Y_BOT - ART_Y_TOP + 1, &rect_bg_dsc);
+
+    // Crescent: solid disc at (108, 38) minus another disc shifted right.
+    canvas_draw_arc(canvas, 108, 38, 5, 0, 359, &arc_moon_full);
+    canvas_draw_arc(canvas, 113, 37, 5, 0, 359, &arc_moon_cut);
+
+    // Stars above the mountains.
+    static const struct { uint8_t x, y; } stars[] = {
+        {18, 30}, {40, 26}, {55, 33}, {72, 28}, {88, 34}, {130, 55},
+    };
+    for (unsigned i = 0; i < ARRAY_SIZE(stars); i++) {
+        canvas_draw_rect(canvas, stars[i].x, stars[i].y, 2, 2, &rect_fg_dsc);
+    }
+
+    // Mountain range polyline.
+    static const lv_point_t peaks[] = {
+        {0,   82},
+        {15,  70},
+        {28,  76},
+        {46,  57},
+        {58,  70},
+        {72,  62},
+        {88,  73},
+        {104, 55},
+        {120, 68},
+        {132, 62},
+        {144, 78},
+    };
+    canvas_draw_line(canvas, peaks, ARRAY_SIZE(peaks), &line_thick_dsc);
+
+    // Horizon.
+    static const lv_point_t horizon[] = {{2, 85}, {142, 85}};
+    canvas_draw_line(canvas, horizon, 2, &line_dsc);
+}
+
+// Four boxes ~34x20 with a 2 px gap, centered horizontally. Active
+// modifiers get a filled rectangle with a background-colour label; the
+// rest get a 1 px outline drawn as four lines (LVGL's rect descriptor
+// has no border-only shortcut, so this is the cleanest way).
+static void draw_mods(lv_obj_t *canvas, const struct status_state *state) {
+    lv_draw_rect_dsc_t rect_bg_dsc;
+    init_rect_dsc(&rect_bg_dsc, LVGL_BACKGROUND);
+    lv_draw_rect_dsc_t rect_fg_dsc;
+    init_rect_dsc(&rect_fg_dsc, LVGL_FOREGROUND);
+    lv_draw_line_dsc_t line_dsc;
+    init_line_dsc(&line_dsc, LVGL_FOREGROUND, 1);
+    lv_draw_label_dsc_t label_fg_dsc;
+    init_label_dsc(&label_fg_dsc, LVGL_FOREGROUND, &lv_font_montserrat_12, LV_TEXT_ALIGN_CENTER);
+    lv_draw_label_dsc_t label_bg_dsc;
+    init_label_dsc(&label_bg_dsc, LVGL_BACKGROUND, &lv_font_montserrat_12, LV_TEXT_ALIGN_CENTER);
+
+    static const char *labels[4] = {"SFT", "CTL", "ALT", "GUI"};
+    // Combined L | R bit masks from the HID modifier byte.
+    static const uint8_t masks[4] = {
+        0x02 | 0x20,  // Shift
+        0x01 | 0x10,  // Ctrl
+        0x04 | 0x40,  // Alt / Option
+        0x08 | 0x80,  // GUI / Cmd
+    };
+
+    const int box_h = 20;
+    const int box_w = 34;
+    const int gap = 2;
+    const int total_w = 4 * box_w + 3 * gap;
+    const int start_x = (CANVAS_SIZE - total_w) / 2;
+
+    canvas_draw_rect(canvas, 0, MODS_Y_TOP, CANVAS_SIZE,
+                     MODS_Y_BOT - MODS_Y_TOP + 1, &rect_bg_dsc);
+
+    for (int i = 0; i < 4; i++) {
+        int x = start_x + i * (box_w + gap);
+        int y = MODS_Y_TOP + 1;
+        bool active = (state->mods & masks[i]) != 0;
+
+        if (active) {
+            canvas_draw_rect(canvas, x, y, box_w, box_h, &rect_fg_dsc);
+            canvas_draw_text(canvas, x, y + 2, box_w, &label_bg_dsc, labels[i]);
+        } else {
+            lv_point_t top_line[]   = {{x, y}, {x + box_w - 1, y}};
+            lv_point_t bot_line[]   = {{x, y + box_h - 1}, {x + box_w - 1, y + box_h - 1}};
+            lv_point_t left_line[]  = {{x, y}, {x, y + box_h - 1}};
+            lv_point_t right_line[] = {{x + box_w - 1, y}, {x + box_w - 1, y + box_h - 1}};
+            canvas_draw_line(canvas, top_line, 2, &line_dsc);
+            canvas_draw_line(canvas, bot_line, 2, &line_dsc);
+            canvas_draw_line(canvas, left_line, 2, &line_dsc);
+            canvas_draw_line(canvas, right_line, 2, &line_dsc);
+            canvas_draw_text(canvas, x, y + 2, box_w, &label_fg_dsc, labels[i]);
+        }
+    }
+}
+
+// draw_top for the MODS_ART variant only redraws the header strip.
+// The art zone lives untouched below it, drawn once by draw_art() at
+// widget init; the mods zone is refreshed by its own listener.
+static void draw_top(lv_obj_t *widget, const struct status_state *state) {
+    lv_obj_t *canvas = lv_obj_get_child(widget, 0);
+    draw_header(canvas, state);
+}
+
+#endif
 
 static void draw_middle(lv_obj_t *widget, const struct status_state *state) {
     lv_obj_t *canvas = lv_obj_get_child(widget, 1);
@@ -191,7 +344,7 @@ static void draw_middle(lv_obj_t *widget, const struct status_state *state) {
     } else {
         profileAdvertising = true;
     }
- 
+
     if (usingUsb) {
         // Draw the pill outline
         canvas_draw_arc(canvas, 15, 14, 13, 90, 270, &arc_dsc);
@@ -382,6 +535,8 @@ ZMK_DISPLAY_WIDGET_LISTENER(widget_layer_status, struct layer_status_state, laye
 
 ZMK_SUBSCRIPTION(widget_layer_status, zmk_layer_state_changed);
 
+#if defined(CONFIG_VISTA508_WIDGET_TOP_WPM)
+
 static void set_wpm_status(struct zmk_widget_status *widget, struct wpm_status_state state) {
     for (int i = 0; i < WPM_SAMPLES - 1; i++) {
         widget->state.wpm[i] = widget->state.wpm[i + 1];
@@ -404,6 +559,38 @@ ZMK_DISPLAY_WIDGET_LISTENER(widget_wpm_status, struct wpm_status_state, wpm_stat
                             wpm_status_get_state)
 ZMK_SUBSCRIPTION(widget_wpm_status, zmk_wpm_state_changed);
 
+#endif  /* CONFIG_VISTA508_WIDGET_TOP_WPM */
+
+#if defined(CONFIG_VISTA508_WIDGET_TOP_MODS_ART)
+
+// Only redraws the modifier zone when the combined L|R modifier bitmap
+// actually changes, so idle-time redraws are zero even though the
+// listener subscribes to every keycode-state event.
+static void set_mods_status(struct zmk_widget_status *widget,
+                            struct mods_status_state state) {
+    if (widget->state.mods == state.mods) {
+        return;
+    }
+    widget->state.mods = state.mods;
+    lv_obj_t *canvas = lv_obj_get_child(widget->obj, 0);
+    draw_mods(canvas, &widget->state);
+}
+
+static void mods_status_update_cb(struct mods_status_state state) {
+    struct zmk_widget_status *widget;
+    SYS_SLIST_FOR_EACH_CONTAINER(&widgets, widget, node) { set_mods_status(widget, state); }
+}
+
+static struct mods_status_state mods_status_get_state(const zmk_event_t *eh) {
+    return (struct mods_status_state){.mods = zmk_hid_get_explicit_mods()};
+}
+
+ZMK_DISPLAY_WIDGET_LISTENER(widget_mods_status, struct mods_status_state,
+                            mods_status_update_cb, mods_status_get_state)
+ZMK_SUBSCRIPTION(widget_mods_status, zmk_keycode_state_changed);
+
+#endif  /* CONFIG_VISTA508_WIDGET_TOP_MODS_ART */
+
 int zmk_widget_status_init(struct zmk_widget_status *widget, lv_obj_t *parent) {
     widget->obj = lv_obj_create(parent);
     lv_obj_set_size(widget->obj, 144, 168);
@@ -421,7 +608,20 @@ int zmk_widget_status_init(struct zmk_widget_status *widget, lv_obj_t *parent) {
     widget_battery_status_init();
     widget_output_status_init();
     widget_layer_status_init();
+#if defined(CONFIG_VISTA508_WIDGET_TOP_WPM)
     widget_wpm_status_init();
+#elif defined(CONFIG_VISTA508_WIDGET_TOP_MODS_ART)
+    widget_mods_status_init();
+    // The art zone is never touched by any listener; draw it once here
+    // and it stays put for the lifetime of the widget.
+    draw_art(top);
+    // The mods listener's initial-state callback early-returns because
+    // widget->state.mods and the freshly-fetched value are both zero on
+    // boot, so nothing has painted the mods zone yet. Draw the empty
+    // outlines explicitly so the strip is not left in canvas-default
+    // (blank background) state until the first modifier press.
+    draw_mods(top, &widget->state);
+#endif
 
     return 0;
 }

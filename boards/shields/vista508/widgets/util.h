@@ -31,7 +31,8 @@ struct status_state {
     bool active_profile_bonded;
     uint8_t layer_index;
     const char *layer_label;
-    uint8_t wpm[WPM_SAMPLES];
+    uint8_t wpm[WPM_SAMPLES];  // used by VISTA508_WIDGET_TOP_WPM
+    uint8_t mods;              // used by VISTA508_WIDGET_TOP_MODS_ART
 #else
     bool connected;
 #endif

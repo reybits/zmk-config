@@ -47,7 +47,20 @@ config VISTA508_WIDGET_STATUS
     select LV_FONT_MONTSERRAT_18
     select LV_FONT_MONTSERRAT_16
     select LV_FONT_MONTSERRAT_12
+
+choice VISTA508_WIDGET_TOP
+    prompt "Central widget top-canvas content"
+    depends on VISTA508_WIDGET_STATUS
+    default VISTA508_WIDGET_TOP_WPM
+
+config VISTA508_WIDGET_TOP_WPM
+    bool "WPM statistics (original)"
     select ZMK_WPM
+
+config VISTA508_WIDGET_TOP_MODS_ART
+    bool "Held-modifier indicators + a procedural landscape"
+
+endchoice
 
 endif # !ZMK_SPLIT || ZMK_SPLIT_ROLE_CENTRAL
 
