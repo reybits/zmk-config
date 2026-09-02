@@ -450,7 +450,7 @@
         &globebslh, P_LB4_QWT, P_LB3_QWT, &kp C,     AS(V),    &kp B,         &kp HOME,    &kp PG_UP, &kp N,         &kp M,     &kp COMMA, P_RB3_QWT, P_RB4_QWT,  &hmr GLOBE EQUAL,
                     &motg_sys, P_SF4_QWT, P_LF3_QWT, &hll L_SYM RET, &hll L_MOU ESC, &kp END,     &kp PG_DN, &bspcmed, &hlr L_NUM SPACE,     P_RF3_QWT, P_SF4_QWT,  &motg_sys
       )>;
-      sensor-bindings = <&mouscrl SCRLDN SCRLUP &inc_dec_kp C_VOL_UP C_VOL_DN>;
+      sensor-bindings = <&mouscrl SCRLDN SCRLUP &inc_dec_kp LS(LA(C_VOL_UP)) LS(LA(C_VOL_DN))>;
     };
 
     // Layer: COLEMAK
@@ -476,7 +476,7 @@
         &globebslh, P_LB4_QWT, P_LB3_QWT, &kp C,     &kp D,     &kp V,         &kp HOME,    &kp PG_UP, &kp K,         &kp H,     &kp COMMA, P_RB3_QWT, P_RB4_QWT, &hmr GLOBE EQUAL,
                     &motg_sys, P_SF4_QWT, P_LF3_QWT, &hll L_SYM RET,  &hll L_MOU ESC, &kp END,     &kp PG_DN, &bspcmed, &hlr L_NUM SPACE,     P_RF3_QWT, P_SF4_QWT, &motg_sys
       )>;
-      sensor-bindings = <&mouscrl SCRLDN SCRLUP &inc_dec_kp C_VOL_UP C_VOL_DN>;
+      sensor-bindings = <&mouscrl SCRLDN SCRLUP &inc_dec_kp LS(LA(C_VOL_UP)) LS(LA(C_VOL_DN))>;
     };
 
     // Layer: NAVIGATION
@@ -502,7 +502,7 @@
         &winPglobe, NAV_LG_Z,    NAV_LG_X,    NAV_LG_C,    NAV_LG_V,    &kp LG(B),  &kp HOME,    &kp PG_UP, &kp MAC_WRDP, &kp MAC_STTL,  &kp MAC_ENDL,  &kp MAC_WRDN, &none,    &none,
                     &none,       &none,       &tog L_NAV,  &none,       &none,      &kp END,     &kp PG_DN, &none,        &none,         &none,         &none,        &molock
       )>;
-      sensor-bindings = <&mouscrl SCRLDN SCRLUP &inc_dec_kp C_VOL_UP C_VOL_DN>;
+      sensor-bindings = <&mouscrl SCRLDN SCRLUP &inc_dec_kp LS(LA(C_VOL_UP)) LS(LA(C_VOL_DN))>;
     };
 
     // Layer: NUMBERS
@@ -528,7 +528,7 @@
         &kp EQUAL,    &kp LPAR, &kp PLUS, &kp MINUS, &kp RPAR,    &kp KP_DOT, &kp HOME,    &kp PG_UP, &none, &none,      &none,     &none,     &none,     &kp GLOBE,
                       &molock,  &none,    &kp COMMA, &kp_bspcdel, &kp SPACE,  &kp END,     &kp PG_DN, &none, &tog L_NUM, &none,     &none,     &none
       )>;
-      sensor-bindings = <&mouscrl SCRLDN SCRLUP &inc_dec_kp C_VOL_UP C_VOL_DN>;
+      sensor-bindings = <&mouscrl SCRLDN SCRLUP &inc_dec_kp LS(LA(C_VOL_UP)) LS(LA(C_VOL_DN))>;
     };
 
     // Layer: SYMBOLS
@@ -554,7 +554,7 @@
         &kp GLOBE, &none,     &none,     &none,     &none,     &none,      &kp HOME,    &kp PG_UP, &kp DLLR,  &kp LBRC,  &kp STAR,  &kp RBRC, &kp CARET, &kp EXCL,
                    &none,     &none,     &none,     &tog L_SYM, &none,     &kp END,     &kp PG_DN, &kp AT,    &kp SPACE, &none,     &none,    &molock
       )>;
-      sensor-bindings = <&mouscrl SCRLDN SCRLUP &inc_dec_kp C_VOL_UP C_VOL_DN>;
+      sensor-bindings = <&mouscrl SCRLDN SCRLUP &inc_dec_kp LS(LA(C_VOL_UP)) LS(LA(C_VOL_DN))>;
     };
 
     // Layer: MEDIA
@@ -581,7 +581,7 @@
         &none, &none,        &none,      &none,      &none,        &kp C_MUTE,   &kp HOME,    &kp PG_UP, &none,      &none,     &none,     &none,     &none,     &kp GLOBE,
                &molock,      &none,      &none,      &none,        &none,        &kp END,     &kp PG_DN, &tog L_MED, &none,     &none,     &none,     &none
       )>;
-      sensor-bindings = <&mouscrl SCRLDN SCRLUP &inc_dec_kp C_VOL_UP C_VOL_DN>;
+      sensor-bindings = <&mouscrl SCRLDN SCRLUP &inc_dec_kp LS(LA(C_VOL_UP)) LS(LA(C_VOL_DN))>;
     };
 
     // Layer: MOUSE
@@ -607,7 +607,7 @@
         &kp GLOBE, P_LB4_MOU, P_LB3_MOU, &none,     &none,     &none,    &kp HOME,    &kp PG_UP, MKP_SCRL_LEFT, MKP_SCRL_DOWN, MKP_SCRL_UP,   MKP_SCRL_RIGHT, &none,          &none,
                    &none,     &none,     P_LF3_MOU, &none,     &tog L_MOU, &kp END,   &kp PG_DN, &mkp MB2,      &mkp MB1,      &mkp MB3,      &mkp MB4,       &molock
       )>;
-      sensor-bindings = <&mouscrl SCRLDN SCRLUP &inc_dec_kp C_VOL_UP C_VOL_DN>;
+      sensor-bindings = <&mouscrl SCRLDN SCRLUP &inc_dec_kp LS(LA(C_VOL_UP)) LS(LA(C_VOL_DN))>;
     };
 
     // Layer: FUNCTIONS
@@ -633,7 +633,7 @@
         &none, &kp F1,  &kp F2,  &kp F3,  &kp F4,  &kp F5,  &kp HOME,    &kp PG_UP, &none, &none,     &none,     P_RB3_FUN, P_RB4_FUN, &kp GLOBE,
                &molock, &none,   &none,   &none,   &none,   &kp END,     &kp PG_DN, &none, &none,     P_RF3_FUN, &none,     &none
       )>;
-      sensor-bindings = <&mouscrl SCRLDN SCRLUP &inc_dec_kp C_VOL_UP C_VOL_DN>;
+      sensor-bindings = <&mouscrl SCRLDN SCRLUP &inc_dec_kp LS(LA(C_VOL_UP)) LS(LA(C_VOL_DN))>;
     };
 
     // Layer: BUTTONS
@@ -659,7 +659,7 @@
         &mt GLOBE MAC_REDO, P_SB4_BUT,    &kp MAC_CUT,   &kp MAC_COPY,  &kp MAC_PASTE, &kp MAC_SP,     &kp HOME,    &kp PG_UP, &kp MAC_SP,     &kp MAC_PASTE, &kp MAC_COPY,  &kp MAC_CUT,   P_SB4_BUT,    &mt GLOBE MAC_REDO,
                             &molock,      P_SF4_BUT,     &none,         &none,         &none,          &kp END,     &kp PG_DN, &none,          &none,         &none,         P_SF4_BUT,     &molock
       )>;
-      sensor-bindings = <&mouscrl SCRLDN SCRLUP &inc_dec_kp C_VOL_UP C_VOL_DN>;
+      sensor-bindings = <&mouscrl SCRLDN SCRLUP &inc_dec_kp LS(LA(C_VOL_UP)) LS(LA(C_VOL_DN))>;
     };
 
     // Layer: SYSTEM
@@ -685,7 +685,7 @@
         &none,       RGB_TOG_KEY,     UG_RESET_KEY,    &none,           BL_TOG_KEY, &kp C_PWR,         &kp HOME,    &kp PG_UP, &bt BT_SEL 0, &bt BT_SEL 1, &bt BT_SEL 2, &bt BT_SEL 3, &bt BT_SEL 4,  &bt BT_CLR,
                      LOCK_SYS_LAYER,  &none,           &none,           &none,      &tog L_CMK,        &kp END,     &kp PG_DN, &none,        &none,        &none,        &none,        LOCK_SYS_LAYER
       )>;
-      sensor-bindings = <&mouscrl SCRLDN SCRLUP &inc_dec_kp C_VOL_UP C_VOL_DN>;
+      sensor-bindings = <&mouscrl SCRLDN SCRLUP &inc_dec_kp LS(LA(C_VOL_UP)) LS(LA(C_VOL_DN))>;
     };
   };
 };
