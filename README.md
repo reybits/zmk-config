@@ -292,8 +292,11 @@ effect on the firmware build itself — `&molock` is always available there).
 Install `keymap-drawer` first (one-time):
 
 ```sh
-$ pipx install keymap-drawer
+$ pipx install keymap-drawer==0.23.0
 ```
+
+Use this version: CI regenerates the maps with it and fails when they differ
+from the committed ones.
 
 Then run the layout regenerator:
 

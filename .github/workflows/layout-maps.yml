@@ -1,0 +1,45 @@
+name: Layer maps
+
+on:
+  push:
+    paths:
+      - "config/**"
+      - "support/**"
+      - "docs/images/**"
+      - "docs/glyphs/**"
+      - ".github/workflows/layout-maps.yml"
+  pull_request:
+    paths:
+      - "config/**"
+      - "support/**"
+      - "docs/images/**"
+      - "docs/glyphs/**"
+      - ".github/workflows/layout-maps.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Check that the layer maps match the keymaps
+    runs-on: ubuntu-latest
+    steps:
+      # A commit, not a tag: a tag can be moved to other code.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      # The committed maps are drawn with this version; another one may draw
+      # the same keymaps differently.
+      - name: Install keymap-drawer
+        run: pipx install keymap-drawer==0.23.0
+      - name: Regenerate the layer maps
+        run: ./support/update-layout-maps.sh
+      # git status, not git diff: a new glyph is an untracked file.
+      - name: Compare with the committed maps
+        run: |
+          changes="$(git status --porcelain -- docs/images docs/glyphs)"
+          if [ -n "$changes" ]; then
+            echo "::error::The layer maps are out of date: run ./support/update-layout-maps.sh and commit the result."
+            echo "$changes"
+            git diff --stat -- docs/images docs/glyphs
+            exit 1
+          fi
