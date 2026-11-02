@@ -39,6 +39,10 @@ if [[ -z "$KD_CACHE" ]]; then
   esac
 fi
 
+# A failed step must stop the script: an old map left in docs/ would pass for
+# a fresh one. Set after the setup, whose lookups print errors or fall back.
+set -eo pipefail
+
 export_layer() {
   local KEYMAP_NAME=$1
   local LAYER_NAME=$2
