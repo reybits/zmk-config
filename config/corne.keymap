@@ -33,14 +33,14 @@
              k10 k11 k12 k13 k14 k15    k18 k19 k1A k1B k1C k1D           \
              k20 k21 k22 k23 k24 k25    k28 k29 k2A k2B k2C k2D           \
              k30 k31 k32 k33 k34 k35    k38 k39 k3A k3B k3C k3D           \
-                         k40 k43 k44    k47 k48 k4B
+                         k42 k43 k44    k47 k48 k49
 
 #define COMBO_KEY_CAPS_WORD  <LM1 RM1>
 #define COMBO_KEY_CAPS_LOCK  <LM0 RM0>
+// No k40/k4B on this board: SYS is held with both outer thumb keys instead.
+#define COMBO_KEY_SYS        <LF2 RF2>
 
 #define USE_HOLD_TAP_LAYER_BUTTONS
-#define USE_HOLD_TAP_LAYER_FUNCTIONS
-#define USE_HOLD_TAP_LAYER_MOUSE
 
 // The OLED build variant ships with CONFIG_ZMK_RGB_UNDERGLOW=y (see
 // corne_oled.conf). The nice!view build doesn't, but the SYS-layer RGB
