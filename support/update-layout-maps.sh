@@ -100,6 +100,11 @@ export_layout_map() {
   keymap -c "$KD_CONFIG_NO_SYMBOLS" parse -z "${CONFIG_ROOT}/config/${KEYMAP_NAME}.keymap" \
     | sed -n '/Navigation:/,$ p' >> "$KD_KEYMAP"
 
+  # On each layer map, draw the key that holds the layer in its own color and
+  # with the layer icon.
+  echo "- Marking the keys that hold each layer"
+  "$PYTHON" "${CONFIG_ROOT}/support/mark_held_keys.py" "$KD_CONFIG_MAIN" "$KD_KEYMAP" || exit 1
+
   LAYOUT_LAYERS=(
     "QWERTY"
     "Navigation"

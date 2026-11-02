@@ -14,6 +14,9 @@ def deep_merge(a: dict, b: dict) -> dict:
         av = result.get(bk)
         if isinstance(av, dict) and isinstance(bv, dict):
             result[bk] = deep_merge(av, bv)
+        elif bk == "svg_extra_style" and isinstance(av, str) and isinstance(bv, str):
+            # An overlay adds styles; replacing them would drop the base ones
+            result[bk] = av + bv
         else:
             result[bk] = deepcopy(bv)
     return result

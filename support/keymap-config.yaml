@@ -19,6 +19,24 @@ draw_config:
   use_local_cache: true
   svg_extra_style: |
     rect.ghost { fill: #7b7e81; }
+    rect.layer-key { fill: #3d6b4f; }
+    /* Layer icons (layer_legend_map) are drawn larger than the other glyphs.
+       They scale around the key center, the origin of each key's coordinates:
+       Chrome misplaces transform-box: fill-box on use elements. An icon below
+       the key action spans y 8 to 20 (48px keys, inner_pad_h 4), so
+       translate(-5px) keeps its bottom edge in place: 20 * (1 - 1.25) = -5. */
+    use.tap[class~="mdi:arrow-all"], use.tap[class~="mdi:numeric"],
+    use.tap[class~="mdi:code-braces"], use.tap[class~="mdi:music"],
+    use.tap[class~="mdi:mouse-variant"], use.tap[class~="mdi:keyboard-f1"],
+    use.tap[class~="mdi:monitor"], use.tap[class~="mdi:cog-outline"] {
+      transform: scale(1.4);
+    }
+    use.hold[class~="mdi:arrow-all"], use.hold[class~="mdi:numeric"],
+    use.hold[class~="mdi:code-braces"], use.hold[class~="mdi:music"],
+    use.hold[class~="mdi:mouse-variant"], use.hold[class~="mdi:keyboard-f1"],
+    use.hold[class~="mdi:monitor"], use.hold[class~="mdi:cog-outline"] {
+      transform: translate(0px, -5px) scale(1.25);
+    }
 
 # Configuration for the Keymap Drawer parser.
 # This is  where most of the magic will happen by replacing the standard
@@ -276,6 +294,19 @@ parse_config:
     C_POWER: "$$mdi:power$$"
     C_PWR: "$$mdi:power$$"
 
+  # Icon of each layer. The layer keys below reuse them through YAML anchors,
+  # and support/mark_held_keys.py uses them to find the key that holds a layer
+  # and draw it on that layer's map, so each icon must stay unique to its layer.
+  layer_legend_map:
+    Navigation: &layer_nav "$$mdi:arrow-all$$"
+    Numbers: &layer_num "$$mdi:numeric$$"
+    Symbols: &layer_sym "$$mdi:code-braces$$"
+    Media: &layer_med "$$mdi:music$$"
+    Mouse: &layer_mou "$$mdi:mouse-variant$$"
+    Functions: &layer_fun "$$mdi:keyboard-f1$$"
+    Buttons: &layer_but "$$mdi:monitor$$"
+    System: &layer_sys "$$mdi:cog-outline$$"
+
   # This map is used to replace the raw version of the key with my special
   # representation of them.
   #
@@ -291,42 +322,42 @@ parse_config:
       {
         t: "$$mdi:backspace$$",
         s: "$$mdi:backspace-reverse$$",
-        h: "$$mdi:numeric-4-box-multiple-outline$$",
+        h: *layer_med,
         type: "held",
       }
     # Number layer
     "&hlr L_NUM SPACE":
       {
         t: "$$mdi:keyboard-space$$",
-        h: "$$mdi:numeric-2-box-multiple-outline$$",
+        h: *layer_num,
         type: "held",
       }
     # Mouse layer (hold) + Esc (tap)
     "&hll L_MOU ESC":
-      { t: "⎋", h: "$$mdi:numeric-5-box-multiple-outline$$", type: "held" }
+      { t: "⎋", h: *layer_mou, type: "held" }
     # Symbols layer
     "&hll L_SYM RET":
       {
         t: "$$mdi:keyboard-return$$",
-        h: "$$mdi:numeric-3-box-multiple-outline$$",
+        h: *layer_sym,
         type: "held",
       }
     # Navigation layer
-    "&mo L_NAV": { t: "$$mdi:numeric-1-box-multiple-outline$$", type: "held" }
+    "&mo L_NAV": { t: *layer_nav, type: "held" }
     # Mouse layer (plain key, kept for configurations that still use it)
-    "&mo L_MOU": { t: "$$mdi:numeric-5-box-multiple-outline$$", type: "held" }
-    "&hll L_MOU Z": { t: "Z", h: "$$mdi:numeric-5-box-multiple-outline$$", type: "held" }
-    "&hll L_MOU X": { t: "X", h: "$$mdi:numeric-5-box-multiple-outline$$", type: "held" }
+    "&mo L_MOU": { t: *layer_mou, type: "held" }
+    "&hll L_MOU Z": { t: "Z", h: *layer_mou, type: "held" }
+    "&hll L_MOU X": { t: "X", h: *layer_mou, type: "held" }
     # Functions layer
-    "&mo L_FUN": { t: "$$mdi:numeric-6-box-multiple-outline$$", type: "held" }
-    "&hlr L_FUN DOT": { t: ".", s: ">", h: "$$mdi:numeric-6-box-multiple-outline$$", type: "held" }
-    "&hlr L_FUN FSLH": { t: "/", s: "?", h: "$$mdi:numeric-6-box-multiple-outline$$", type: "held" }
+    "&mo L_FUN": { t: *layer_fun, type: "held" }
+    "&hlr L_FUN DOT": { t: ".", s: ">", h: *layer_fun, type: "held" }
+    "&hlr L_FUN FSLH": { t: "/", s: "?", h: *layer_fun, type: "held" }
     # Buttons layer
-    "&mo L_BUT": { t: "$$mdi:numeric-7-box-multiple-outline$$", type: "held" }
-    "&hll L_BUT Z": { t: "Z", h: "$$mdi:numeric-7-box-multiple-outline$$", type: "held" }
-    "&hlr L_BUT FSLH": { t: "/", s: "?", h: "$$mdi:numeric-7-box-multiple-outline$$", type: "held" }
+    "&mo L_BUT": { t: *layer_but, type: "held" }
+    "&hll L_BUT Z": { t: "Z", h: *layer_but, type: "held" }
+    "&hlr L_BUT FSLH": { t: "/", s: "?", h: *layer_but, type: "held" }
     # System layer
-    "&mo L_SYS": { t: "$$mdi:numeric-8-box-multiple-outline$$", type: "held" }
+    "&mo L_SYS": { t: *layer_sys, type: "held" }
     # Alternative layout
     "&tog L_CMK": "$$mdi:keyboard-variant$$"
     # Lock in-place key
@@ -337,7 +368,7 @@ parse_config:
     # the Corne Buttons layer, the lock on the System layer); the ghost style
     # only marks where the layer is held from.
     #---------------------------------------------------------------------------
-    "&butundotog": { t: "$$mdi:undo$$", h: "$$mdi:numeric-7-box-multiple-outline$$", type: "ghost" }
+    "&butundotog": { t: "$$mdi:undo$$", h: *layer_but, type: "ghost" }
     "&syslocktog": { t: "$$mdi:lock-outline$$", type: "ghost" }
 
     # Homerow modifiers
