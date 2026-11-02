@@ -9,7 +9,7 @@ CONFIG_ROOT="$(git rev-parse --show-toplevel)"
 KEYMAP_BIN="$(command -v keymap)"
 if [[ -z "$KEYMAP_BIN" ]]; then
   echo "Error: 'keymap' not found in PATH. Install keymap-drawer first:" >&2
-  echo "  pipx install keymap-drawer && pipx ensurepath" >&2
+  echo "  pipx install keymap-drawer==0.23.0 && pipx ensurepath" >&2
   exit 1
 fi
 
