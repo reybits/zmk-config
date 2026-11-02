@@ -312,45 +312,32 @@ parse_config:
         type: "held",
       }
     # Navigation layer
-    "&motg_nav": { t: "$$mdi:numeric-1-box-multiple-outline$$", type: "held" }
-    # Mouse layer (alt tap-dance, kept for configurations that still use it)
-    "&motg_mou": { t: "$$mdi:numeric-5-box-multiple-outline$$", type: "held" }
+    "&mo L_NAV": { t: "$$mdi:numeric-1-box-multiple-outline$$", type: "held" }
+    # Mouse layer (plain key, kept for configurations that still use it)
+    "&mo L_MOU": { t: "$$mdi:numeric-5-box-multiple-outline$$", type: "held" }
     "&hll L_MOU Z": { t: "Z", h: "$$mdi:numeric-5-box-multiple-outline$$", type: "held" }
     "&hll L_MOU X": { t: "X", h: "$$mdi:numeric-5-box-multiple-outline$$", type: "held" }
-    # Buttons layer
-    "&motg_fun": { t: "$$mdi:numeric-6-box-multiple-outline$$", type: "held" }
+    # Functions layer
+    "&mo L_FUN": { t: "$$mdi:numeric-6-box-multiple-outline$$", type: "held" }
     "&hlr L_FUN DOT": { t: ".", s: ">", h: "$$mdi:numeric-6-box-multiple-outline$$", type: "held" }
     "&hlr L_FUN FSLH": { t: "/", s: "?", h: "$$mdi:numeric-6-box-multiple-outline$$", type: "held" }
     # Buttons layer
-    "&motg_but": { t: "$$mdi:numeric-7-box-multiple-outline$$", type: "held" }
+    "&mo L_BUT": { t: "$$mdi:numeric-7-box-multiple-outline$$", type: "held" }
     "&hll L_BUT Z": { t: "Z", h: "$$mdi:numeric-7-box-multiple-outline$$", type: "held" }
     "&hlr L_BUT FSLH": { t: "/", s: "?", h: "$$mdi:numeric-7-box-multiple-outline$$", type: "held" }
     # System layer
-    "&motg_sys": { t: "$$mdi:numeric-8-box-multiple-outline$$", type: "held" }
+    "&mo L_SYS": { t: "$$mdi:numeric-8-box-multiple-outline$$", type: "held" }
     # Alternative layout
     "&tog L_CMK": "$$mdi:keyboard-variant$$"
     # Lock in-place key
     "&molock": "$$mdi:lock-outline$$"
 
-    # Layer deactivation keys
-    # These are keys on the layers themselves that are used to move back to the
-    # base layer.
+    # Layer keys drawn on their own layer
+    # The key that holds a layer keeps its real binding on that layer (Undo on
+    # the Corne Buttons layer, the lock on the System layer); the ghost style
+    # only marks where the layer is held from.
     #---------------------------------------------------------------------------
-    "&tog L_NAV": { t: "$$mdi:numeric-1-box-multiple-outline$$", type: "ghost" }
-    "&tog L_NUM": { t: "$$mdi:numeric-2-box-multiple-outline$$", type: "ghost" }
-    "&tog L_SYM": { t: "$$mdi:numeric-3-box-multiple-outline$$", type: "ghost" }
-    "&tog L_MED": { t: "$$mdi:numeric-4-box-multiple-outline$$", type: "ghost" }
-    "&tog L_MOU": { t: "$$mdi:numeric-5-box-multiple-outline$$", type: "ghost" }
-    "&tog L_FUN": { t: "$$mdi:numeric-6-box-multiple-outline$$", type: "ghost" }
-    "&tog L_BUT": { t: "$$mdi:numeric-7-box-multiple-outline$$", type: "ghost" }
     "&butundotog": { t: "$$mdi:undo$$", h: "$$mdi:numeric-7-box-multiple-outline$$", type: "ghost" }
-    # NOTE:
-    # The System layer have activation keys on both halfs of the keyboard and
-    # this breaks the pattern of locking the layer with the System layer key,
-    # and toggle them back using the key that activate it. The solution was to
-    # remove the System layer toggle from the keyboard, but I left its
-    # definition hefe just in case I change my mind in the future.
-    "&tog L_SYS": { t: "$$mdi:numeric-8-box-multiple-outline$$", type: "ghost" }
     "&syslocktog": { t: "$$mdi:lock-outline$$", type: "ghost" }
 
     # Homerow modifiers

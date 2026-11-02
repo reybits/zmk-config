@@ -37,7 +37,9 @@ Some notable features are:
 - **Momentary layers**: All layers require you to keep a key pressed to use
   them, but you can lock them in place via the `&molock` behavior, which
   builds on upstream ZMK's layer-locking feature from [PR
-  #2717](https://github.com/zmkfirmware/zmk/pull/2717);
+  #2717](https://github.com/zmkfirmware/zmk/pull/2717). To lock a layer,
+  hold its key and tap the outermost thumb key of the other half; tap that
+  key again to unlock. This is the only way to lock a layer;
 - **Dynamic keys**: Keys morph into other keys depending on the situation and
   requirement;
 - **Timeless homerow mods**: Homerow mod configuration based on [Robert U
@@ -150,6 +152,9 @@ words, and beginning and end of line (which is mostly the same as Home and End,
 but some Mac applications don't accept the proper keys, and you're forced to use
 `⌘ ←` (`Command+Left-Arrow`) and `⌘ →` (`Command+Right-Arrow`) for _“Home”_ and
 _“End”_ respectively).
+
+Enter, Esc, Space and Backspace stay on their usual thumb keys, so the layer
+remains usable while it is locked.
 
 ## Numbers Layer
 
@@ -272,8 +277,8 @@ This layer is where I put all my media controlling buttons.
 ![Buttons layer layout](./images/rolio46-layer7-buttons.svg)
 
 Rolio activates this layer from the inner-thumb pair adjacent to the System
-and Lock keys — tap holds the layer momentarily, double-tap toggles it. Z
-and `/` stay as plain letters on this board.
+and Lock keys — hold either key to use the layer. Z and `/` stay as plain
+letters on this board.
 
 ## System Layer
 

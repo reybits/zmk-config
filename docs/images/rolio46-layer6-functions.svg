@@ -475,9 +475,8 @@ rect.ghost { fill: #7b7e81; }
 <g transform="translate(532, 211)" class="key keypos-44">
 <rect rx="6" ry="6" x="-24" y="-24" width="48" height="48" class="key"/>
 </g>
-<g transform="translate(588, 203)" class="key ghost keypos-45">
-<rect rx="6" ry="6" x="-24" y="-24" width="48" height="48" class="key ghost"/>
-<use href="#mdi:numeric-6-box-multiple-outline" xlink:href="#mdi:numeric-6-box-multiple-outline" x="-7" y="-7" height="14" width="14.0" class="key ghost tap glyph mdi:numeric-6-box-multiple-outline"/>
+<g transform="translate(588, 203)" class="key keypos-45">
+<rect rx="6" ry="6" x="-24" y="-24" width="48" height="48" class="key"/>
 </g>
 <g transform="translate(644, 196)" class="key keypos-46">
 <rect rx="6" ry="6" x="-24" y="-24" width="48" height="48" class="key"/>

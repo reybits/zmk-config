@@ -35,7 +35,7 @@
 
 // USE_HOLD_TAP_LAYER_BUTTONS is intentionally NOT defined here.
 // Rolio's 5-key thumb cluster gives us a dedicated inner-thumb pair
-// for the Buttons layer (P_SF4_QWT becomes &motg_but) so we don't
+// for the Buttons layer (P_SF4_QWT becomes &mo L_BUT) so we don't
 // need to steal Z and / for hold-tap.
 
 // Rolio ships with switch backlight (CONFIG_ZMK_BACKLIGHT=y in rolio.conf),
