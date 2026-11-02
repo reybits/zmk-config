@@ -72,7 +72,8 @@
 // on the outer thumb key of the other half; tap `&molock` again to unlock.
 // Double-tap toggles and on-layer `&tog` keys are left out on purpose: they
 // lock layers by accident, on a quick re-press or through a second activation
-// key of the same layer.
+// key of the same layer. A board without the outermost thumb keys (k40, k4B),
+// like Corne, has no lock and holds SYS with the `COMBO_KEY_SYS` combo.
 
 // // // // // // // // // // // // // // // // // // // // // // // // // // // //
 // About layer-keys layout                                                       //
@@ -120,68 +121,10 @@
 #define P_SF4_QWT  &none
 #define P_SB4_BUT  UNDO_TOG_BUT_LAYER
 #else
+#define P_LB4_QWT  &kp Z
+#define P_RB4_QWT  &kp FSLH
 #define P_SF4_QWT  &mo L_BUT
 #define P_SB4_BUT  &kp MAC_UNDO
-#endif
-
-// Definition of macros representing all alternatives positions for the
-// activation of the "Functions" layer. Notice that COLEMAK and QWERTY share the
-// same keys on the positions chosen for the activation key.
-//
-// Also, is worth explaining that I like to make the alternative hold-tap
-// position to be in the edge of the core cluster of keys. This means that if a
-// keyboard uses hold-tap for "Buttons" and "Functions", the "Buttons" key will
-// positioned on the outer edge of the core cluster, and the "Functions" one
-// will be right besides it towards the inner side. But when a keyboard only
-// uses the "Functions" layer activation as a hold-tap, then that key will be
-// the one on the outer edge of the main cluster.
-//
-// Think about this as if you have gravity pulling these keys to the outer
-// side of the keyboard.
-#if defined(USE_HOLD_TAP_LAYER_BUTTONS) && defined(USE_HOLD_TAP_LAYER_FUNCTIONS)
-#define P_RB3_QWT  &hlr L_FUN DOT
-#define P_RF3_QWT  &none
-#elif !defined(USE_HOLD_TAP_LAYER_BUTTONS) && !defined(USE_HOLD_TAP_LAYER_FUNCTIONS)
-#define P_RB4_QWT  &kp FSLH
-#define P_RB3_QWT  &kp DOT
-#define P_RF3_QWT  &mo L_FUN
-#elif !defined(USE_HOLD_TAP_LAYER_BUTTONS)
-#define P_RB4_QWT  &hlr L_FUN FSLH
-#define P_RB3_QWT  &kp DOT
-#define P_RF3_QWT  &none
-#else
-#define P_RB3_QWT  &kp DOT
-#define P_RF3_QWT  &mo L_FUN
-#endif
-
-// Definition of macros representing all alternatives positions for the
-// activation of the "Mouse" layer. Notice that COLEMAK and QWERTY share the
-// same keys on the positions chosen for the activation key.
-//
-// Also, is worth explaining that I like to make the alternative hold-tap
-// position to be in the edge of the core cluster of keys. This means that if a
-// keyboard uses hold-tap for "Buttons" and "Mouse", the "Buttons" key will
-// positioned on the outer edge of the core cluster, and the "Mouse" one will
-// be right besides it towards the inner side. But when a keyboard only uses
-// the "Mouse" layer activation as a hold-tap, then that key will be the one on
-// the outer edge of the main cluster.
-//
-// Think about this as if you have gravity pulling these keys to the outer
-// side of the keyboard.
-#if defined(USE_HOLD_TAP_LAYER_BUTTONS) && defined(USE_HOLD_TAP_LAYER_MOUSE)
-#define P_LB3_QWT  &hll L_MOU X
-#define P_LF3_QWT  &none
-#elif !defined(USE_HOLD_TAP_LAYER_BUTTONS) && !defined(USE_HOLD_TAP_LAYER_MOUSE)
-#define P_LB4_QWT  &kp Z
-#define P_LB3_QWT  &kp X
-#define P_LF3_QWT  &mo L_NAV
-#elif !defined(USE_HOLD_TAP_LAYER_BUTTONS)
-#define P_LB4_QWT  &hll L_MOU Z
-#define P_LB3_QWT  &kp X
-#define P_LF3_QWT  &none
-#else
-#define P_LB3_QWT  &kp X
-#define P_LF3_QWT  &mo L_MOU
 #endif
 
 // LED-system feature flags
@@ -338,6 +281,22 @@
             layers = <L_QWT L_CMK>;
             bindings = <&kp CAPS>;
         };
+
+        // Optional: SYS for a board whose thumb row has no k40/k4B. Both outer
+        // thumb keys never go down together while typing, and `slow-release`
+        // keeps SYS until both are up, so one thumb can let go and reach the
+        // keys next to it. Not `&sl`: `&bt` and `&tog` send no keycode, so a
+        // sticky SYS would linger for a second over the reset and bootloader
+        // keys.
+#if defined(COMBO_KEY_SYS)
+        combo_sys {
+            timeout-ms = <75>;
+            key-positions = COMBO_KEY_SYS;
+            layers = <L_QWT L_CMK>;
+            bindings = <&mo L_SYS>;
+            slow-release;
+        };
+#endif
     };
 };
 
@@ -370,8 +329,8 @@
         &lbktgrave, &kp_rN1,   &kp_rN2,   &kp_rN3,   &kp_rN4,  &kp_rN5,                               &kp_rN6,       &kp_rN7,   &kp_rN8,   &kp_rN9,   &kp_rN0,    &kp RBKT,
         &kp GRAVE,  &kp Q,     &kp W,     &kp E,     &kp R,    &kp T,         &kp LHYP,    &kp RHYP,  &kp Y,         &kp U,     &kp I,     &kp O,     &kp P,      &kp MINUS,
         &kp TAB,    LHM4(A),   LHM3(S),   LHM2(D),   LHM1(F),  &kp G,         &kp LMEH,    &kp RMEH,  &kp H,         RHM1(J),   RHM2(K),   RHM3(L),   RHM4(SEMI), &kp SQT,
-        &globebslh, P_LB4_QWT, P_LB3_QWT, &kp C,     AS(V),    &kp B,         &kp HOME,    &kp PG_UP, &kp N,         &kp M,     &kp COMMA, P_RB3_QWT, P_RB4_QWT,  &hmr GLOBE EQUAL,
-                    &mo L_SYS, P_SF4_QWT, P_LF3_QWT, &hll L_SYM RET, &hll L_MOU ESC, &kp END,     &kp PG_DN, &bspcmed, &hlr L_NUM SPACE,     P_RF3_QWT, P_SF4_QWT,  &mo L_SYS
+        &globebslh, P_LB4_QWT, &kp X,     &kp C,     AS(V),    &kp B,         &kp HOME,    &kp PG_UP, &kp N,         &kp M,     &kp COMMA, &kp DOT,   P_RB4_QWT,  &hmr GLOBE EQUAL,
+                    &mo L_SYS, P_SF4_QWT, &mo L_NAV, &hll L_SYM RET, &hll L_MOU ESC, &kp END,     &kp PG_DN, &bspcmed, &hlr L_NUM SPACE,     &mo L_FUN, P_SF4_QWT,  &mo L_SYS
       )>;
       sensor-bindings = <&mouscrl SCRLDN SCRLUP &inc_dec_kp LS(LA(C_VOL_UP)) LS(LA(C_VOL_DN))>;
     };
@@ -396,8 +355,8 @@
         &lbktgrave, &kp_rN1,   &kp_rN2,   &kp_rN3,   &kp_rN4,   &kp_rN5,                               &kp_rN6,       &kp_rN7,   &kp_rN8,   &kp_rN9,   &kp_rN0,   &kp RBKT,
         &kp GRAVE,  &kp Q,     &kp W,     &kp F,     &kp P,     &kp B,         &kp LHYP,    &kp RHYP,  &kp J,         &kp L,     &kp U,     &kp Y,     &kp SEMI,  &kp MINUS,
         &kp TAB,    LHM4(A),   LHM3(R),   LHM2(S),   LHM1(T),   &kp G,         &kp LMEH,    &kp RMEH,  &kp M,         RHM1(N),   RHM2(E),   RHM3(I),   RHM4(O),   &kp SQT,
-        &globebslh, P_LB4_QWT, P_LB3_QWT, &kp C,     &kp D,     &kp V,         &kp HOME,    &kp PG_UP, &kp K,         &kp H,     &kp COMMA, P_RB3_QWT, P_RB4_QWT, &hmr GLOBE EQUAL,
-                    &mo L_SYS, P_SF4_QWT, P_LF3_QWT, &hll L_SYM RET,  &hll L_MOU ESC, &kp END,     &kp PG_DN, &bspcmed, &hlr L_NUM SPACE,     P_RF3_QWT, P_SF4_QWT, &mo L_SYS
+        &globebslh, P_LB4_QWT, &kp X,     &kp C,     &kp D,     &kp V,         &kp HOME,    &kp PG_UP, &kp K,         &kp H,     &kp COMMA, &kp DOT,   P_RB4_QWT, &hmr GLOBE EQUAL,
+                    &mo L_SYS, P_SF4_QWT, &mo L_NAV, &hll L_SYM RET,  &hll L_MOU ESC, &kp END,     &kp PG_DN, &bspcmed, &hlr L_NUM SPACE,     &mo L_FUN, P_SF4_QWT, &mo L_SYS
       )>;
       sensor-bindings = <&mouscrl SCRLDN SCRLUP &inc_dec_kp LS(LA(C_VOL_UP)) LS(LA(C_VOL_DN))>;
     };
