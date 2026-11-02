@@ -23,11 +23,7 @@
     syslocktog: system_layer_lock_or_toggle {
       compatible = "zmk,behavior-macro";
       #binding-cells = <0>;
-#if defined(USE_MOLOCK)
       bindings = <&molock>;
-#else
-      bindings = <&tog L_SYS>;
-#endif
     };
 
     butundotog: undo_or_buttons_layer_toggle {
