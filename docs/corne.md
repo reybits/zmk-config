@@ -35,11 +35,8 @@ Some notable features are:
   layers on different sides of the keyboard, to help my brain to identify what
   hand to use in which situation;
 - **Momentary layers**: All layers require you to keep a key pressed to use
-  them, but you can lock them in place via the `&molock` behavior, which
-  builds on upstream ZMK's layer-locking feature from [PR
-  #2717](https://github.com/zmkfirmware/zmk/pull/2717). To lock a layer,
-  hold its key and tap the outermost thumb key of the other half; tap that
-  key again to unlock. This is the only way to lock a layer;
+  them. Corne has no layer lock: Rolio locks a layer with the outermost key
+  of its thumb clusters, which Corne's three-key clusters don't have;
 - **Dynamic keys**: Keys morph into other keys depending on the situation and
   requirement;
 - **Timeless homerow mods**: Homerow mod configuration based on [Robert U
@@ -144,8 +141,8 @@ apps and windows with my layout.
 
 ![Navigation layer layout](./images/corne42-layer1-navigation.svg)
 
-**Activation:** ![Navigation layer](./glyphs/arrow-all.svg) none at the moment:
-Corne has no key that reaches this layer yet.
+**Activation:** ![Navigation layer](./glyphs/arrow-all.svg) hold the outer key
+of the left thumb cluster.
 
 The navigation layer is meant to control the text cursor on the screen.
 
@@ -160,8 +157,7 @@ The left half holds one-hand `⌘` shortcuts for the letters under it (`⌘ Q` t
 `⌘ B`; the homerow keys still act as modifiers when held) and the application
 and window switchers on the outer column.
 
-Enter, Esc, Space and Backspace stay on their usual thumb keys, so the layer
-remains usable while it is locked.
+Enter, Esc, Space and Backspace stay on their usual thumb keys.
 
 ## Numbers Layer
 
@@ -283,18 +279,19 @@ This layer is where I put all my media controlling buttons.
 ![Mouse layer layout](./images/corne42-layer5-mouse.svg)
 
 **Activation:** ![Mouse layer](./glyphs/mouse-variant.svg) hold Esc (left
-thumb) or `X`.
+thumb).
 
 Pointer movement sits on `H J K L` and scrolling on the row below. The mouse
-buttons are on the right thumb (right and left click) and on the left top row
-(back, middle, right, left, forward). Cut, copy, paste and undo sit on the
-right top row, and the left homerow keeps the modifiers.
+buttons are on the right thumb (right, left and middle click) and on the left
+top row (back, middle, right, left, forward). Cut, copy, paste and undo sit on
+the right top row, and the left homerow keeps the modifiers.
 
 ## Functions Layer
 
 ![Functions layer layout](./images/corne42-layer6-functions.svg)
 
-**Activation:** ![Functions layer](./glyphs/keyboard-f1.svg) hold `.`.
+**Activation:** ![Functions layer](./glyphs/keyboard-f1.svg) hold the outer key
+of the right thumb cluster.
 
 `F1` to `F5` sit on the bottom row, `F6` to `F10` on the home row and `F11` to
 `F15` on the top row of the left half; the right homerow keeps the modifiers.
@@ -313,8 +310,10 @@ layer keys: tapping them still types the letter.
 
 ![System layer layout](./images/corne42-layer8-system.svg)
 
-**Activation:** ![System layer](./glyphs/cog-outline.svg) hold the outer key of
-either thumb cluster; tap the other one to lock the layer.
+**Activation:** ![System layer](./glyphs/cog-outline.svg) press the outer keys
+of both thumb clusters together. The layer stays on until both are released,
+so one thumb can let go and reach the keys next to it, like the COLEMAK toggle
+under the left thumb.
 
 The System layer is the only full-keyboard layer in this layout. I code it this
 way because it hosts several keys that act on the half of the keyboard where

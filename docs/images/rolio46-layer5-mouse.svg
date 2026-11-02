@@ -331,6 +331,10 @@ use.hold[class~="mdi:mouse-variant"], use.hold[class~="mdi:keyboard-f1"],
 use.hold[class~="mdi:monitor"], use.hold[class~="mdi:cog-outline"] {
   transform: translate(0px, -5px) scale(1.25);
 }
+/* A combo icon keeps its size: its coordinates are not centered on the
+   combo, so a scale would move it away. Wins over the rules above by
+   coming after them with the same specificity. */
+use.combo.glyph { transform: none; }
 </style>
 <g transform="translate(30, 0)" class="layer-Mouse">
 <text x="0" y="28" class="label" id="Mouse">Mouse:</text>

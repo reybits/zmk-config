@@ -37,6 +37,10 @@ draw_config:
     use.hold[class~="mdi:monitor"], use.hold[class~="mdi:cog-outline"] {
       transform: translate(0px, -5px) scale(1.25);
     }
+    /* A combo icon keeps its size: its coordinates are not centered on the
+       combo, so a scale would move it away. Wins over the rules above by
+       coming after them with the same specificity. */
+    use.combo.glyph { transform: none; }
 
 # Configuration for the Keymap Drawer parser.
 # This is  where most of the magic will happen by replacing the standard
@@ -344,14 +348,8 @@ parse_config:
       }
     # Navigation layer
     "&mo L_NAV": { t: *layer_nav, type: "held" }
-    # Mouse layer (plain key, kept for configurations that still use it)
-    "&mo L_MOU": { t: *layer_mou, type: "held" }
-    "&hll L_MOU Z": { t: "Z", h: *layer_mou, type: "held" }
-    "&hll L_MOU X": { t: "X", h: *layer_mou, type: "held" }
     # Functions layer
     "&mo L_FUN": { t: *layer_fun, type: "held" }
-    "&hlr L_FUN DOT": { t: ".", s: ">", h: *layer_fun, type: "held" }
-    "&hlr L_FUN FSLH": { t: "/", s: "?", h: *layer_fun, type: "held" }
     # Buttons layer
     "&mo L_BUT": { t: *layer_but, type: "held" }
     "&hll L_BUT Z": { t: "Z", h: *layer_but, type: "held" }
