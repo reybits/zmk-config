@@ -91,15 +91,18 @@ the layout easily, here is a table with all the symbols I use:
 | ![Keyboard](./docs/glyphs/keyboard-variant.svg) | Alternate layout (COLEMAK) | ![Bluetooth profile](./docs/glyphs/bluetooth-connect.svg) | Bluetooth profile | ![Bluetooth clear](./docs/glyphs/bluetooth-off.svg) | Bluetooth profile clear |
 | ![Keyboard power](./docs/glyphs/power-plug-outline.svg) | Toggle OLED display | ![LED underglow actions](./docs/glyphs/palette-outline.svg) | LED RGB underglow actions | ![USB](./docs/glyphs/usb.svg) | Output mode (USB / BLE) |
 | ![Computer power](./docs/glyphs/power.svg) | Turn off host computer | ![Keyboard reset](./docs/glyphs/restart.svg) | Reset firmware | ![Bootload](./docs/glyphs/code-block-tags.svg) | Bootload mode |
-| ![Layer 1](./docs/glyphs/numeric-1-box-multiple-outline.svg) | Numbers Layer | ![Layer 2](./docs/glyphs/numeric-2-box-multiple-outline.svg) | Symbols Layer | ![Layer 3](./docs/glyphs/numeric-3-box-multiple-outline.svg) | Navigation Layer |
-| ![Layer 4](./docs/glyphs/numeric-4-box-multiple-outline.svg) | Media Layer | ![Layer 5](./docs/glyphs/numeric-5-box-multiple-outline.svg) | Buttons Layer | ![Layer 6](./docs/glyphs/numeric-6-box-multiple-outline.svg) | System Layer |
-| ![Layer lock](./docs/glyphs/lock-outline.svg) | Lock layer in place |  |  |  |  |
+| ![Navigation layer](./docs/glyphs/arrow-all.svg) | Navigation Layer | ![Numbers layer](./docs/glyphs/numeric.svg) | Numbers Layer | ![Symbols layer](./docs/glyphs/code-braces.svg) | Symbols Layer |
+| ![Media layer](./docs/glyphs/music.svg) | Media Layer | ![Mouse layer](./docs/glyphs/mouse-variant.svg) | Mouse Layer | ![Functions layer](./docs/glyphs/keyboard-f1.svg) | Functions Layer |
+| ![Buttons layer](./docs/glyphs/monitor.svg) | Buttons Layer | ![System layer](./docs/glyphs/cog-outline.svg) | System Layer | ![Layer lock](./docs/glyphs/lock-outline.svg) | Lock layer in place |
 
 ## Key Representation
 
 When looking at the layout map images, you'll see that some keys have their
 background highlighted with different colors than the rest; many of them, also
 have more than one symbol as their labels.
+
+On each layer map, the key you hold to reach that layer is drawn in green and
+carries the layer icon.
 
 To understand what all those symbols mean, let's first, look at how a key that
 has a single purpose is represented:

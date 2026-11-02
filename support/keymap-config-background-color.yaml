@@ -2,10 +2,10 @@
 # SPDX-License-Identifier: MIT
 
 # This file has just an extra configuration to apply a background color to the
-# generated SVG output.
+# generated SVG output. merge_yaml.py appends this style to the one in
+# keymap-config.yaml.
 
 # Configuration for the "rendering" part of Keymap Drawer
 draw_config:
   svg_extra_style: |
-    rect.ghost { fill: #7b7e81; }
     svg.keymap { background-color: #000000; }

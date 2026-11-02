@@ -68,8 +68,8 @@ The modifications I did to his configuration are basically 3:
    use single-hand modifier combos faster;
 2. Defined a special homerow modifier for _“Shift”_ that has everything the
    other homerow mods have, except for the `require-prior-idle-ms`;
-3. Defined a special homerow modifier to use with momentary layers (`&lt`). It
-   uses the same configuration as the _“Shift”_ modifier;
+3. Defined a special homerow modifier to use with momentary layers (`&hll` and
+   `&hlr`). It uses the same configuration as the _“Shift”_ modifier;
 
 The current modifier order on the homerow, from pinky to index, is the same
 on both hands:
@@ -144,6 +144,9 @@ apps and windows with my layout.
 
 ![Navigation layer layout](./images/rolio46-layer1-navigation.svg)
 
+**Activation:** ![Navigation layer](./glyphs/arrow-all.svg) hold the middle key
+of the left thumb cluster.
+
 The navigation layer is meant to control the text cursor on the screen.
 
 You have the arrow keys aligned with your homerow primary keys, _“Home”_,
@@ -153,12 +156,18 @@ but some Mac applications don't accept the proper keys, and you're forced to use
 `⌘ ←` (`Command+Left-Arrow`) and `⌘ →` (`Command+Right-Arrow`) for _“Home”_ and
 _“End”_ respectively).
 
+The left half holds one-hand `⌘` shortcuts for the letters under it (`⌘ Q` to
+`⌘ B`; the homerow keys still act as modifiers when held) and the application
+and window switchers on the outer column.
+
 Enter, Esc, Space and Backspace stay on their usual thumb keys, so the layer
 remains usable while it is locked.
 
 ## Numbers Layer
 
 ![Numbers layer layout](./images/rolio46-layer2-numbers.svg)
+
+**Activation:** ![Numbers layer](./glyphs/numeric.svg) hold Space (right thumb).
 
 While looking into other layouts out there, I noticed that most people tend to
 position their numbers like an inverted phone keypad, mimicking the numeric
@@ -201,6 +210,9 @@ layout became more “intuitive” for me.
 ## Symbols Layer
 
 ![Symbols layer layout](./images/rolio46-layer3-symbols.svg)
+
+**Activation:** ![Symbols layer](./glyphs/code-braces.svg) hold Enter (left
+thumb).
 
 One of the things I always avoided in the past was dealing with my symbols
 layers. I always defined them, but barely use them. Because of comfort or strong
@@ -251,6 +263,8 @@ I do not know where it came from.
 
 ![Media layer layout](./images/rolio46-layer4-media.svg)
 
+**Activation:** ![Media layer](./glyphs/music.svg) hold Backspace (right thumb).
+
 This layer is where I put all my media controlling buttons.
 
 - The volume column (up / down / mute) lives on the right edge of the
@@ -268,28 +282,49 @@ This layer is where I put all my media controlling buttons.
 
 ![Mouse layer layout](./images/rolio46-layer5-mouse.svg)
 
+**Activation:** ![Mouse layer](./glyphs/mouse-variant.svg) hold Esc (left
+thumb).
+
+Pointer movement sits on `H J K L` and scrolling on the row below. The mouse
+buttons are on the right thumb (right, left and middle click, then back) and on
+the left top row (back, middle, right, left, forward). Cut, copy, paste and
+undo sit on the right top row, and the left homerow keeps the modifiers.
+
 ## Functions Layer
 
 ![Functions layer layout](./images/rolio46-layer6-functions.svg)
+
+**Activation:** ![Functions layer](./glyphs/keyboard-f1.svg) hold the middle
+key of the right thumb cluster.
+
+`F1` to `F5` sit on the bottom row, `F6` to `F10` on the home row and `F11` to
+`F15` on the top row of the left half; the right homerow keeps the modifiers.
+`F16` to `F20` live on the number row of the shared layout, which neither Rolio
+nor Corne has.
 
 ## Buttons Layer
 
 ![Buttons layer layout](./images/rolio46-layer7-buttons.svg)
 
-Rolio activates this layer from the inner-thumb pair adjacent to the System
-and Lock keys — hold either key to use the layer. Z and `/` stay as plain
-letters on this board.
+**Activation:** ![Buttons layer](./glyphs/monitor.svg) hold the second key
+from the outside of either thumb cluster. `Z` and `/` stay plain letters on
+Rolio.
 
 ## System Layer
 
 ![System layer layout](./images/rolio46-layer8-system.svg)
 
+**Activation:** ![System layer](./glyphs/cog-outline.svg) hold the outermost key
+of either thumb cluster; tap the other one to lock the layer.
+
 The System layer is the only full-keyboard layer in this layout. I code it this
 way because it hosts several keys that act on the half of the keyboard where
 they're located.
 
-I added all the _Function_ keys on this layer too, but I aligned them from
-bottom to top so they could scale nicely on bigger keyboards.
+It holds the bootloader and reset keys on both halves, the Bluetooth profiles
+(1 to 5, plus clearing the current one) on the right bottom row, the USB/BLE
+output toggle, the external power toggle, the host power key and the switch
+backlight controls.
 
 This layer, also has the key that will change the base layout of the keyboard to
 a COLEMAK layout.
