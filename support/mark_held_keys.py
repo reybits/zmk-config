@@ -5,8 +5,9 @@
 # The layer keys are drawn through raw_binding_map, so keymap-drawer cannot
 # tell which key activates which layer. The icon of each layer
 # (layer_legend_map in the keymap-drawer config) is unique to it, so a base
-# layer key carrying that icon is a key that holds the layer. The marked key
-# gets its own class, layer-key: "held" is already worn by the modifiers.
+# layer key carrying that icon is a key that holds the layer, and so is every
+# key of a combo carrying it. The marked key gets its own class, layer-key:
+# "held" is already worn by the modifiers.
 
 import argparse
 from pathlib import Path
@@ -55,11 +56,13 @@ keymap_path = Path(args.keymap)
 keymap = yaml.safe_load(keymap_path.read_text())
 layers = keymap["layers"]
 base = next(iter(layers.values()))
+combos = keymap.get("combos", [])
 
 for layer, icon in icons.items():
     if layer not in layers:
         continue
     held = [position for position, key in enumerate(base) if icon in legends(key)]
+    held += [position for combo in combos if icon in legends(combo["k"]) for position in combo["p"]]
     for position in held:
         layers[layer][position] = mark(layers[layer][position], icon)
     print(f"  {layer}: held key positions {held or 'none'}")
