@@ -222,11 +222,10 @@ The layout exposes two related behaviors on combos rather than dedicated keys:
   the occasional fully-capitalized word without holding _Shift_.
 
 - **`CAPS_LOCK`** — pressing `G` + `H` together. This sends the real
-  `CAPS_LOCK` HID keycode. macOS can be configured under
-  _System Settings → Keyboard → Input Sources → Use Caps Lock to switch
-  between input sources_ to route this toggle to switch between input
-  languages (e.g. PL ↔ EN) instead of flipping the caps light, which is why
-  it's kept available even though it's a rarely-needed key otherwise.
+  `CAPS_LOCK` HID keycode. On macOS and iPadOS, the keyboard's _Modifier
+  Keys_ settings remap Caps Lock to _Globe_, so the combo switches the input
+  source with a short tap and never turns caps lock on. ZMK's own `GLOBE`
+  keycode can't do this, see the Globe Key section above.
 
 ## My methodology
 
