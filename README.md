@@ -35,8 +35,9 @@
 >   moved off the innermost left thumb onto the position next to it,
 >   so a sustained hold no longer needs the thumb to curl all the way
 >   inward. Mouse and Navigation activation swapped within the left
->   thumb — Navigation via a tap-dance at the middle-left thumb, Mouse
->   via a hold-tap on the innermost left thumb (Esc is the tap face).
+>   thumb — Navigation via a plain momentary key at the middle-left
+>   thumb, Mouse via a hold-tap on the innermost left thumb (Esc is the
+>   tap face).
 
 This repository contains the ZMK user configuration for all my keyboards that
 use the [ZMK](https://zmk.dev/) firmware.

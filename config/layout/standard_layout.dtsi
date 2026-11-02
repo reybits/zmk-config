@@ -65,6 +65,15 @@
   continue-list = <UNDERSCORE MINUS BSPC>;
 };
 
+// Layer keys
+// -----------------------------------------------------------------------------
+// A layer key only holds its layer (`&mo`); on its own layer that position is
+// `&none`. A layer is locked in one way only: hold its key and tap `&molock`
+// on the outer thumb key of the other half; tap `&molock` again to unlock.
+// Double-tap toggles and on-layer `&tog` keys are left out on purpose: they
+// lock layers by accident, on a quick re-press or through a second activation
+// key of the same layer.
+
 // // // // // // // // // // // // // // // // // // // // // // // // // // // //
 // About layer-keys layout                                                       //
 // -----------------------                                                       //
@@ -109,11 +118,9 @@
 #define P_LB4_QWT  &hll L_BUT Z
 #define P_RB4_QWT  &hlr L_BUT FSLH
 #define P_SF4_QWT  &none
-#define P_SF4_BUT  &none
 #define P_SB4_BUT  UNDO_TOG_BUT_LAYER
 #else
-#define P_SF4_QWT  &motg_but
-#define P_SF4_BUT  &tog L_BUT
+#define P_SF4_QWT  &mo L_BUT
 #define P_SB4_BUT  &kp MAC_UNDO
 #endif
 
@@ -134,29 +141,17 @@
 #if defined(USE_HOLD_TAP_LAYER_BUTTONS) && defined(USE_HOLD_TAP_LAYER_FUNCTIONS)
 #define P_RB3_QWT  &hlr L_FUN DOT
 #define P_RF3_QWT  &none
-#define P_RF3_FUN  &none
-#define P_RB3_FUN  &tog L_FUN
-#define P_RB4_FUN  &none
 #elif !defined(USE_HOLD_TAP_LAYER_BUTTONS) && !defined(USE_HOLD_TAP_LAYER_FUNCTIONS)
 #define P_RB4_QWT  &kp FSLH
 #define P_RB3_QWT  &kp DOT
-#define P_RF3_QWT  &motg_fun
-#define P_RF3_FUN  &tog L_FUN
-#define P_RB3_FUN  &none
-#define P_RB4_FUN  &none
+#define P_RF3_QWT  &mo L_FUN
 #elif !defined(USE_HOLD_TAP_LAYER_BUTTONS)
 #define P_RB4_QWT  &hlr L_FUN FSLH
 #define P_RB3_QWT  &kp DOT
 #define P_RF3_QWT  &none
-#define P_RF3_FUN  &none
-#define P_RB3_FUN  &none
-#define P_RB4_FUN  &tog L_FUN
 #else
 #define P_RB3_QWT  &kp DOT
-#define P_RF3_QWT  &motg_fun
-#define P_RF3_FUN  &tog L_FUN
-#define P_RB3_FUN  &none
-#define P_RB4_FUN  &none
+#define P_RF3_QWT  &mo L_FUN
 #endif
 
 // Definition of macros representing all alternatives positions for the
@@ -176,29 +171,17 @@
 #if defined(USE_HOLD_TAP_LAYER_BUTTONS) && defined(USE_HOLD_TAP_LAYER_MOUSE)
 #define P_LB3_QWT  &hll L_MOU X
 #define P_LF3_QWT  &none
-#define P_LF3_MOU  &none
-#define P_LB3_MOU  &tog L_MOU
-#define P_LB4_MOU  &none
 #elif !defined(USE_HOLD_TAP_LAYER_BUTTONS) && !defined(USE_HOLD_TAP_LAYER_MOUSE)
 #define P_LB4_QWT  &kp Z
 #define P_LB3_QWT  &kp X
-#define P_LF3_QWT  &motg_nav
-#define P_LF3_MOU  &none
-#define P_LB3_MOU  &none
-#define P_LB4_MOU  &none
+#define P_LF3_QWT  &mo L_NAV
 #elif !defined(USE_HOLD_TAP_LAYER_BUTTONS)
 #define P_LB4_QWT  &hll L_MOU Z
 #define P_LB3_QWT  &kp X
 #define P_LF3_QWT  &none
-#define P_LF3_MOU  &none
-#define P_LB3_MOU  &none
-#define P_LB4_MOU  &tog L_MOU
 #else
 #define P_LB3_QWT  &kp X
-#define P_LF3_QWT  &motg_mou
-#define P_LF3_MOU  &tog L_MOU
-#define P_LB3_MOU  &none
-#define P_LB4_MOU  &none
+#define P_LF3_QWT  &mo L_MOU
 #endif
 
 // LED-system feature flags
@@ -264,66 +247,6 @@
       #binding-cells = <0>;
       bindings = <&hlr L_MED BSPC>, <&kp DEL>;
       mods = <(MOD_LSFT|MOD_RSFT)>;
-    };
-
-    // Tap: -
-    // Shift-tap: -
-    // Double-tap: Toggle Navigation Layer
-    // Hold: Activate Navigation Layer
-    // Morph: -
-    motg_nav: momentary_or_toggle_layer_nav {
-      compatible = "zmk,behavior-tap-dance";
-      #binding-cells = <0>;
-      tapping-term-ms = <200>;
-      bindings = <&mo L_NAV>, <&tog L_NAV>;
-    };
-
-    // Tap: -
-    // Shift-tap: -
-    // Double-tap: Toggle System Layer
-    // Hold: Activate System Layer
-    // Morph: -
-    motg_sys: momentary_or_toggle_layer_sys {
-      compatible = "zmk,behavior-tap-dance";
-      #binding-cells = <0>;
-      tapping-term-ms = <200>;
-      bindings = <&mo L_SYS>, <&tog L_SYS>;
-    };
-
-    // Tap: -
-    // Shift-tap: -
-    // Double-tap: Toggle Buttons Layer
-    // Hold: Activate Buttons Layer
-    // Morph: -
-    motg_but: momentary_or_toggle_layer_but {
-      compatible = "zmk,behavior-tap-dance";
-      #binding-cells = <0>;
-      tapping-term-ms = <200>;
-      bindings = <&mo L_BUT>, <&tog L_BUT>;
-    };
-
-    // Tap: -
-    // Shift-tap: -
-    // Double-tap: Toggle Functions Layer
-    // Hold: Activate Functions Layer
-    // Morph: -
-    motg_fun: momentary_or_toggle_layer_fun {
-      compatible = "zmk,behavior-tap-dance";
-      #binding-cells = <0>;
-      tapping-term-ms = <200>;
-      bindings = <&mo L_FUN>, <&tog L_FUN>;
-    };
-
-    // Tap: -
-    // Shift-tap: -
-    // Double-tap: Toggle Mouse Layer
-    // Hold: Activate Mouse Layer
-    // Morph: -
-    motg_mou: momentary_or_toggle_layer_mou {
-      compatible = "zmk,behavior-tap-dance";
-      #binding-cells = <0>;
-      tapping-term-ms = <200>;
-      bindings = <&mo L_MOU>, <&tog L_MOU>;
     };
 
     // Tap: Backslash ('\')
@@ -439,7 +362,7 @@
     // │ \ ┊  ┃   Z   ┃   X   ┃   C   ┃   V   ┃   B   ┃ │   ↖   │  │   ⇞   │ ┃   N   ┃   M   ┃   ,   ┃   .   ┃   /   ┃ = ┊  │
     // ╰───────┺━━━━━━━┻━━━━━━━┻━━━━━━━┻━━━━━━━┻━━━━━━━┛ ├───────┤  ├───────┤ ┗━━━━━━━┻━━━━━━━┻━━━━━━━┻━━━━━━━┻━━━━━━━┹───────╯
     //         ┌───────┬───────┬───────┬───────┬───────┐ │   ↘   │  │   ⇟   │ ┌───────┬───────┬───────┬───────┬───────┐
-    //         │   󰎺   │   󰎷   │   󰎯   │ 󰭜 ┊ 󰎥 │ ⎋ ┊ 󰎫 │ └───────╯  ╰───────┘ │ ⏎ ┊ 󰎲 │ 󱁐 ┊ 󰎨 │   󰎴   │   󰎷   │   󰎺   │
+    //         │   󰎺   │   󰎷   │   󰎥   │ ⏎ ┊ 󰎫 │ ⎋ ┊ 󰎯 │ └───────╯  ╰───────┘ │ 󰭜 ┊ 󰎲 │ 󱁐 ┊ 󰎨 │   󰎴   │   󰎷   │   󰎺   │
     //         ╰───────┴───────┴───────┴───────┴───────┘                      └───────┴───────┴───────┴───────┴───────╯
     MAIN {
       display-name = "QWERTY";
@@ -448,7 +371,7 @@
         &kp GRAVE,  &kp Q,     &kp W,     &kp E,     &kp R,    &kp T,         &kp LHYP,    &kp RHYP,  &kp Y,         &kp U,     &kp I,     &kp O,     &kp P,      &kp MINUS,
         &kp TAB,    LHM4(A),   LHM3(S),   LHM2(D),   LHM1(F),  &kp G,         &kp LMEH,    &kp RMEH,  &kp H,         RHM1(J),   RHM2(K),   RHM3(L),   RHM4(SEMI), &kp SQT,
         &globebslh, P_LB4_QWT, P_LB3_QWT, &kp C,     AS(V),    &kp B,         &kp HOME,    &kp PG_UP, &kp N,         &kp M,     &kp COMMA, P_RB3_QWT, P_RB4_QWT,  &hmr GLOBE EQUAL,
-                    &motg_sys, P_SF4_QWT, P_LF3_QWT, &hll L_SYM RET, &hll L_MOU ESC, &kp END,     &kp PG_DN, &bspcmed, &hlr L_NUM SPACE,     P_RF3_QWT, P_SF4_QWT,  &motg_sys
+                    &mo L_SYS, P_SF4_QWT, P_LF3_QWT, &hll L_SYM RET, &hll L_MOU ESC, &kp END,     &kp PG_DN, &bspcmed, &hlr L_NUM SPACE,     P_RF3_QWT, P_SF4_QWT,  &mo L_SYS
       )>;
       sensor-bindings = <&mouscrl SCRLDN SCRLUP &inc_dec_kp LS(LA(C_VOL_UP)) LS(LA(C_VOL_DN))>;
     };
@@ -465,7 +388,7 @@
     // │ \ ┊  ┃   Z   ┃   X   ┃   C   ┃   D   ┃   V   ┃ │   ↖   │  │   ⇞   │ ┃   K   ┃   H   ┃   ,   ┃   .   ┃   /   ┃ = ┊  │
     // ╰───────┺━━━━━━━┻━━━━━━━┻━━━━━━━┻━━━━━━━┻━━━━━━━┛ ├───────┤  ├───────┤ ┗━━━━━━━┻━━━━━━━┻━━━━━━━┻━━━━━━━┻━━━━━━━┹───────╯
     //         ┌───────┬───────┬───────┬───────┬───────┐ │   ↘   │  │   ⇟   │ ┌───────┬───────┬───────┬───────┬───────┐
-    //         │   󰎺   │   󰎷   │   󰎯   │ 󰭜 ┊ 󰎥 │ ⎋ ┊ 󰎫 │ └───────╯  ╰───────┘ │ ⏎ ┊ 󰎲 │ 󱁐 ┊ 󰎨 │   󰎴   │   󰎷   │   󰎺   │
+    //         │   󰎺   │   󰎷   │   󰎥   │ ⏎ ┊ 󰎫 │ ⎋ ┊ 󰎯 │ └───────╯  ╰───────┘ │ 󰭜 ┊ 󰎲 │ 󱁐 ┊ 󰎨 │   󰎴   │   󰎷   │   󰎺   │
     //         ╰───────┴───────┴───────┴───────┴───────┘                      └───────┴───────┴───────┴───────┴───────╯
     COLEMAK {
       display-name = "COLEMAK";
@@ -474,7 +397,7 @@
         &kp GRAVE,  &kp Q,     &kp W,     &kp F,     &kp P,     &kp B,         &kp LHYP,    &kp RHYP,  &kp J,         &kp L,     &kp U,     &kp Y,     &kp SEMI,  &kp MINUS,
         &kp TAB,    LHM4(A),   LHM3(R),   LHM2(S),   LHM1(T),   &kp G,         &kp LMEH,    &kp RMEH,  &kp M,         RHM1(N),   RHM2(E),   RHM3(I),   RHM4(O),   &kp SQT,
         &globebslh, P_LB4_QWT, P_LB3_QWT, &kp C,     &kp D,     &kp V,         &kp HOME,    &kp PG_UP, &kp K,         &kp H,     &kp COMMA, P_RB3_QWT, P_RB4_QWT, &hmr GLOBE EQUAL,
-                    &motg_sys, P_SF4_QWT, P_LF3_QWT, &hll L_SYM RET,  &hll L_MOU ESC, &kp END,     &kp PG_DN, &bspcmed, &hlr L_NUM SPACE,     P_RF3_QWT, P_SF4_QWT, &motg_sys
+                    &mo L_SYS, P_SF4_QWT, P_LF3_QWT, &hll L_SYM RET,  &hll L_MOU ESC, &kp END,     &kp PG_DN, &bspcmed, &hlr L_NUM SPACE,     P_RF3_QWT, P_SF4_QWT, &mo L_SYS
       )>;
       sensor-bindings = <&mouscrl SCRLDN SCRLUP &inc_dec_kp LS(LA(C_VOL_UP)) LS(LA(C_VOL_DN))>;
     };
@@ -482,16 +405,16 @@
     // Layer: NAVIGATION
     // ╭────────────────── Left-side ──────────────────╮                      ╭───────────────── Right-side ──────────────────╮
     // ├───────┬───────┬───────┬───────┬───────┬───────┤                      ├───────┬───────┬───────┬───────┬───────┬───────┤
-    // │  ⌘ `  │  󰘳 1  │  󰘳 2  │  󰘳 3  │  󰘳 4  │  󰘳 5  │                      │       │   󰌥   │  ←   │   →  │   󰌒   │       │
+    // │  ⌘ `  │  󰘳 1  │  󰘳 2  │  󰘳 3  │  󰘳 4  │  󰘳 5  │                      │   󰌥   │  ←   │   →  │   󰌒   │       │       │
     // ├───────╆━━━━━━━╈━━━━━━━╈━━━━━━━╈━━━━━━━╈━━━━━━━┪ ┌───────╮  ╭───────┐ ┢━━━━━━━╈━━━━━━━╈━━━━━━━╈━━━━━━━╈━━━━━━━╅───────┤
-    // │  ⌘ ⇥  ┃  󰘳 Q  ┃  󰘳 W  ┃  󰘳 E  ┃  󰘳 R  ┃  󰘳 T  ┃ │  HYP  │  │  HYP  │ ┃       ┃   ↖   ┃   ⇟   ┃   ⇞   ┃   ↘   ┃       │
+    // │  ⌘ ⇥  ┃  󰘳 Q  ┃  󰘳 W  ┃  󰘳 E  ┃  󰘳 R  ┃  󰘳 T  ┃ │  HYP  │  │  HYP  │ ┃   ↖   ┃   ⇟   ┃   ⇞   ┃   ↘   ┃       ┃       │
     // ├───────╊━━━━━━━╋━━━━━━━╋━━━━━━━╋━━━━━━━╋━━━━━━━┫ ├───────┤  ├───────┤ ┣━━━━━━━╋━━━━━━━╋━━━━━━━╋━━━━━━━╋━━━━━━━╉───────┤
-    // │  ⌘ `  ┃ 󰘳A┊ 󰘳 ┃ 󰘳S┊ 󰘵 ┃ 󰘳D┊ 󰘴 ┃ 󰘳F┊ 󰘶 ┃  󰘳 G  ┃ │  MEH  │  │  MEH  │ ┃       ┃   ←   ┃   ↓   ┃   ↑   ┃   →   ┃       │
+    // │  ⌘ `  ┃ 󰘳A┊ 󰘳 ┃ 󰘳S┊ 󰘵 ┃ 󰘳D┊ 󰘴 ┃ 󰘳F┊ 󰘶 ┃  󰘳 G  ┃ │  MEH  │  │  MEH  │ ┃   ←   ┃   ↓   ┃   ↑   ┃   →   ┃       ┃       │
     // ├───────╊━━━━━━━╋━━━━━━━╋━━━━━━━╋━━━━━━━╋━━━━━━━┫ ├───────┤  ├───────┤ ┣━━━━━━━╋━━━━━━━╋━━━━━━━╋━━━━━━━╋━━━━━━━╉───────┤
-    // │      ┃  󰘳 Z  ┃  󰘳 X  ┃  󰘳 C  ┃  󰘳 V  ┃  󰘳 B  ┃ │   ↖   │  │   ⇞   │ ┃       ┃   󰾺   ┃   󰊆   ┃   󰊅   ┃   󰾸   ┃       │
+    // │      ┃  󰘳 Z  ┃  󰘳 X  ┃  󰘳 C  ┃  󰘳 V  ┃  󰘳 B  ┃ │   ↖   │  │   ⇞   │ ┃   󰾺   ┃   󰊆   ┃   󰊅   ┃   󰾸   ┃       ┃       │
     // ╰───────┺━━━━━━━┻━━━━━━━┻━━━━━━━┻━━━━━━━┻━━━━━━━┛ ├───────┤  ├───────┤ ┗━━━━━━━┻━━━━━━━┻━━━━━━━┻━━━━━━━┻━━━━━━━┹───────╯
     //         ┌───────┬───────┬───────┬───────┬───────┐ │   ↘   │  │   ⇟   │ ┌───────┬───────┬───────┬───────┬───────┐
-    //         │       │       │       │ -=〿=- │       │ └───────╯  ╰───────┘ │       │       │       │       │   󰍁   │
+    //         │       │       │ -=〿=- │   ⏎   │   ⎋   │ └───────╯  ╰───────┘ │   󰭜   │   󱁐   │       │       │   󰍁   │
     //         ╰───────┴───────┴───────┴───────┴───────┘                      └───────┴───────┴───────┴───────┴───────╯
     NAV {
       display-name = "Navigation";
@@ -500,7 +423,7 @@
         &appswtnxt, &kp LG(Q),   &kp LG(W),   &kp LG(E),   &kp LG(R),   &kp LG(T),  &kp LHYP,    &kp RHYP,  &kp HOME,     &kp PG_DN,     &kp PG_UP,     &kp END,      &none,    &none,
         &appPwinN,  LMT4(LG(A)), LMT3(LG(S)), LMT2(LG(D)), LMT1(LG(F)), NAV_LG_G,   &kp LMEH,    &kp RMEH,  &kp LEFT,     &kp DOWN,      &kp UP,        &kp RIGHT,    &none,    &none,
         &winPglobe, NAV_LG_Z,    NAV_LG_X,    NAV_LG_C,    NAV_LG_V,    &kp LG(B),  &kp HOME,    &kp PG_UP, &kp MAC_WRDP, &kp MAC_STTL,  &kp MAC_ENDL,  &kp MAC_WRDN, &none,    &none,
-                    &none,       &none,       &tog L_NAV,  &none,       &none,      &kp END,     &kp PG_DN, &none,        &none,         &none,         &none,        &molock
+                    &none,       &none,       &none,       &kp RET,     &kp ESC,    &kp END,     &kp PG_DN, &kp_bspcdel,  &kp SPACE,     &none,         &none,        &molock
       )>;
       sensor-bindings = <&mouscrl SCRLDN SCRLUP &inc_dec_kp LS(LA(C_VOL_UP)) LS(LA(C_VOL_DN))>;
     };
@@ -526,7 +449,7 @@
         &kp KP_ENTER, &kp N1,   &kp N2,   &kp N3,    &kp N4,      &kp N5,     &kp LHYP,    &kp RHYP,  &none, &none,      &none,     &none,     &none,     &none,
         &kp TAB,      &kp N6,   &kp N7,   &kp N8,    &kp N9,      &kp N0,     &kp LMEH,    &kp RMEH,  &none, &kp RHRM1,  &kp RHRM2, &kp RHRM3, &kp RHRM4, &none,
         &kp EQUAL,    &kp LPAR, &kp PLUS, &kp MINUS, &kp RPAR,    &kp KP_DOT, &kp HOME,    &kp PG_UP, &none, &none,      &none,     &none,     &none,     &kp GLOBE,
-                      &molock,  &none,    &kp COMMA, &kp_bspcdel, &kp SPACE,  &kp END,     &kp PG_DN, &none, &tog L_NUM, &none,     &none,     &none
+                      &molock,  &none,    &kp COMMA, &kp_bspcdel, &kp SPACE,  &kp END,     &kp PG_DN, &none, &none,      &none,     &none,     &none
       )>;
       sensor-bindings = <&mouscrl SCRLDN SCRLUP &inc_dec_kp LS(LA(C_VOL_UP)) LS(LA(C_VOL_DN))>;
     };
@@ -543,7 +466,7 @@
     // │      ┃       ┃       ┃       ┃       ┃       ┃ │   ↖   │  │   ⇞   │ ┃   $   ┃   {   ┃   *   ┃   }   ┃   ^   ┃   !   │
     // ╰───────┺━━━━━━━┻━━━━━━━┻━━━━━━━┻━━━━━━━┻━━━━━━━┛ ├───────┤  ├───────┤ ┗━━━━━━━┻━━━━━━━┻━━━━━━━┻━━━━━━━┻━━━━━━━┹───────╯
     //         ┌───────┬───────┬───────┬───────┬───────┐ │   ↘   │  │   ⇟   │ ┌───────┬───────┬───────┬───────┬───────┐
-    //         │       │       │       │       │ -=〿=- │ └───────╯  ╰───────┘ │   @   │   󱁐   │       │       │   󰍁   │
+    //         │       │       │       │ -=〿=- │       │ └───────╯  ╰───────┘ │   @   │   󱁐   │       │       │   󰍁   │
     //         ╰───────┴───────┴───────┴───────┴───────┘                      └───────┴───────┴───────┴───────┴───────╯
     SYMBOL {
       display-name = "Symbols";
@@ -552,7 +475,7 @@
         &none,     &none,     &none,     &none,     &none,     &none,      &kp LHYP,    &kp RHYP,  &kp AMPS,  &kp LT,    &kp EQUAL, &kp GT,   &kp PIPE,  &kp HASH,
         &none,     &kp LHRM4, &kp LHRM3, &kp LHRM2, &kp LHRM1, &none,      &kp LMEH,    &kp RMEH,  &kp LBKT,  &kp LPAR,  &kp COLON, &kp RPAR, &kp RBKT,  &kp PRCNT,
         &kp GLOBE, &none,     &none,     &none,     &none,     &none,      &kp HOME,    &kp PG_UP, &kp DLLR,  &kp LBRC,  &kp STAR,  &kp RBRC, &kp CARET, &kp EXCL,
-                   &none,     &none,     &none,     &tog L_SYM, &none,     &kp END,     &kp PG_DN, &kp AT,    &kp SPACE, &none,     &none,    &molock
+                   &none,     &none,     &none,     &none,      &none,     &kp END,     &kp PG_DN, &kp AT,    &kp SPACE, &none,     &none,    &molock
       )>;
       sensor-bindings = <&mouscrl SCRLDN SCRLUP &inc_dec_kp LS(LA(C_VOL_UP)) LS(LA(C_VOL_DN))>;
     };
@@ -579,7 +502,7 @@
         &none, &bri_up,      &none,      &kp C_STOP, &none,        &kp C_VOL_UP, &kp LHYP,    &kp RHYP,  &none,      &none,     &none,     &none,     &none,     &none,
         &none, &bri_dn,      &kp C_PREV, &kp C_PP,   &kp C_NEXT,   &kp C_VOL_DN, &kp LMEH,    &kp RMEH,  &none,      &kp RHRM1, &kp RHRM2, &kp RHRM3, &kp RHRM4, &none,
         &none, &none,        &none,      &none,      &none,        &kp C_MUTE,   &kp HOME,    &kp PG_UP, &none,      &none,     &none,     &none,     &none,     &kp GLOBE,
-               &molock,      &none,      &none,      &none,        &none,        &kp END,     &kp PG_DN, &tog L_MED, &none,     &none,     &none,     &none
+               &molock,      &none,      &none,      &none,        &none,        &kp END,     &kp PG_DN, &none,      &none,     &none,     &none,     &none
       )>;
       sensor-bindings = <&mouscrl SCRLDN SCRLUP &inc_dec_kp LS(LA(C_VOL_UP)) LS(LA(C_VOL_DN))>;
     };
@@ -589,14 +512,14 @@
     // ├───────┬───────┬───────┬───────┬───────┬───────┤                      ├───────┬───────┬───────┬───────┬───────┬───────┤
     // │       │       │       │       │       │       │                      │       │       │       │       │       │       │
     // ├───────╆━━━━━━━╈━━━━━━━╈━━━━━━━╈━━━━━━━╈━━━━━━━┪ ┌───────╮  ╭───────┐ ┢━━━━━━━╈━━━━━━━╈━━━━━━━╈━━━━━━━╈━━━━━━━╅───────┤
-    // │       ┃       ┃       ┃       ┃       ┃       ┃ │  HYP  │  │  HYP  │ ┃       ┃   󰆐   ┃   󰆏   ┃   󰆒   ┃   󰕌   ┃       │
+    // │       ┃  B 󰍽  ┃  M 󰍽  ┃  R 󰍽  ┃  L 󰍽  ┃  F 󰍽  ┃ │  HYP  │  │  HYP  │ ┃       ┃   󰆐   ┃   󰆏   ┃   󰆒   ┃   󰕌   ┃       │
     // ├───────╊━━━━━━━╋━━━━━━━╋━━━━━━━╋━━━━━━━╋━━━━━━━┫ ├───────┤  ├───────┤ ┣━━━━━━━╋━━━━━━━╋━━━━━━━╋━━━━━━━╋━━━━━━━╉───────┤
-    // │       ┃   󰘳   ┃   󰘵   ┃   󰘴   ┃   󰘶   ┃       ┃ │  MEH  │  │  MEH  │ ┃       ┃  ← 󰍽  ┃  ↓ 󰍽  ┃  󰍽 ↑  ┃  󰍽 →  ┃       │
+    // │       ┃   󰘳   ┃   󰘵   ┃   󰘴   ┃   󰘶   ┃       ┃ │  MEH  │  │  MEH  │ ┃  ← 󰍽  ┃  ↓ 󰍽  ┃  󰍽 ↑  ┃  󰍽 →  ┃       ┃       │
     // ├───────╊━━━━━━━╋━━━━━━━╋━━━━━━━╋━━━━━━━╋━━━━━━━┫ ├───────┤  ├───────┤ ┣━━━━━━━╋━━━━━━━╋━━━━━━━╋━━━━━━━╋━━━━━━━╉───────┤
-    // │      ┃       ┃       ┃       ┃       ┃       ┃ │   ↖   │  │   ⇞   │ ┃       ┃  ← 󱕒  ┃  ↓ 󱕒  ┃  󱕒 ↑  ┃  󱕒 →  ┃       │
+    // │      ┃       ┃       ┃       ┃       ┃       ┃ │   ↖   │  │   ⇞   │ ┃  ← 󱕒  ┃  ↓ 󱕒  ┃  󱕒 ↑  ┃  󱕒 →  ┃       ┃       │
     // ╰───────┺━━━━━━━┻━━━━━━━┻━━━━━━━┻━━━━━━━┻━━━━━━━┛ ├───────┤  ├───────┤ ┗━━━━━━━┻━━━━━━━┻━━━━━━━┻━━━━━━━┻━━━━━━━┹───────╯
     //         ┌───────┬───────┬───────┬───────┬───────┐ │   ↘   │  │   ⇟   │ ┌───────┬───────┬───────┬───────┬───────┐
-    //         │       │       │ -=〿=- │       │       │ └───────╯  ╰───────┘ │  R 󰍽  │  L 󰍽  │  M 󰍽  │       │   󰍁   │
+    //         │       │       │       │       │ -=〿=- │ └───────╯  ╰───────┘ │  R 󰍽  │  L 󰍽  │  M 󰍽  │  B 󰍽  │   󰍁   │
     //         ╰───────┴───────┴───────┴───────┴───────┘                      └───────┴───────┴───────┴───────┴───────╯
     MOUSE {
       display-name = "Mouse";
@@ -604,8 +527,8 @@
         &none,     &none,     &none,     &none,     &none,     &none,                            &none,         &none,         &none,         &none,          &none,          &none,
         &none,     &mkp MB4,  &mkp MB3,  &mkp MB2,  &mkp MB1,  &mkp MB5, &kp LHYP,    &kp RHYP,  &none,         &kp MAC_CUT,   &kp MAC_COPY,  &kp MAC_PASTE,  &kp MAC_UNDO,   &none,
         &none,     &kp LHRM4, &kp LHRM3, &kp LHRM2, &kp LHRM1, &none,    &kp LMEH,    &kp RMEH,  MKP_MOVE_LEFT, MKP_MOVE_DOWN, MKP_MOVE_UP,   MKP_MOVE_RIGHT, &none,          &none,
-        &kp GLOBE, P_LB4_MOU, P_LB3_MOU, &none,     &none,     &none,    &kp HOME,    &kp PG_UP, MKP_SCRL_LEFT, MKP_SCRL_DOWN, MKP_SCRL_UP,   MKP_SCRL_RIGHT, &none,          &none,
-                   &none,     &none,     P_LF3_MOU, &none,     &tog L_MOU, &kp END,   &kp PG_DN, &mkp MB2,      &mkp MB1,      &mkp MB3,      &mkp MB4,       &molock
+        &kp GLOBE, &none,     &none,     &none,     &none,     &none,    &kp HOME,    &kp PG_UP, MKP_SCRL_LEFT, MKP_SCRL_DOWN, MKP_SCRL_UP,   MKP_SCRL_RIGHT, &none,          &none,
+                   &none,     &none,     &none,     &none,     &none,      &kp END,   &kp PG_DN, &mkp MB2,      &mkp MB1,      &mkp MB3,      &mkp MB4,       &molock
       )>;
       sensor-bindings = <&mouscrl SCRLDN SCRLUP &inc_dec_kp LS(LA(C_VOL_UP)) LS(LA(C_VOL_DN))>;
     };
@@ -630,8 +553,8 @@
         &none, &kp F16, &kp F17, &kp F18, &kp F19, &kp F20,                         &none, &none,     &none,     &none,     &none,     &none,
         &none, &kp F11, &kp F12, &kp F13, &kp F14, &kp F15, &kp LHYP,    &kp RHYP,  &none, &none,     &none,     &none,     &none,     &none,
         &none, &kp F6,  &kp F7,  &kp F8,  &kp F9,  &kp F10, &kp LMEH,    &kp RMEH,  &none, &kp RHRM1, &kp RHRM2, &kp RHRM3, &kp RHRM4, &none,
-        &none, &kp F1,  &kp F2,  &kp F3,  &kp F4,  &kp F5,  &kp HOME,    &kp PG_UP, &none, &none,     &none,     P_RB3_FUN, P_RB4_FUN, &kp GLOBE,
-               &molock, &none,   &none,   &none,   &none,   &kp END,     &kp PG_DN, &none, &none,     P_RF3_FUN, &none,     &none
+        &none, &kp F1,  &kp F2,  &kp F3,  &kp F4,  &kp F5,  &kp HOME,    &kp PG_UP, &none, &none,     &none,     &none,     &none,     &kp GLOBE,
+               &molock, &none,   &none,   &none,   &none,   &kp END,     &kp PG_DN, &none, &none,     &none,     &none,     &none
       )>;
       sensor-bindings = <&mouscrl SCRLDN SCRLUP &inc_dec_kp LS(LA(C_VOL_UP)) LS(LA(C_VOL_DN))>;
     };
@@ -657,7 +580,7 @@
         &none,              &kp MAC_DKTP, &kp MAC_WINP,  &kp MAC_WINN,  &kp MAC_DKTN,  &kp MAC_APPWIN, &kp LHYP,    &kp RHYP,  &kp MAC_APPWIN, &kp MAC_DKTP,  &kp MAC_WINP,  &kp MAC_WINN,  &kp MAC_DKTN, &none,
         &none,              &kp LHRM4,    &kp LHRM3,     &kp LHRM2,     &kp LHRM1,     &kp MAC_MC,     &kp LMEH,    &kp RMEH,  &kp MAC_MC,     &kp RHRM1,     &kp RHRM2,     &kp RHRM3,     &kp RHRM4,    &none,
         &mt GLOBE MAC_REDO, P_SB4_BUT,    &kp MAC_CUT,   &kp MAC_COPY,  &kp MAC_PASTE, &kp MAC_SP,     &kp HOME,    &kp PG_UP, &kp MAC_SP,     &kp MAC_PASTE, &kp MAC_COPY,  &kp MAC_CUT,   P_SB4_BUT,    &mt GLOBE MAC_REDO,
-                            &molock,      P_SF4_BUT,     &none,         &none,         &none,          &kp END,     &kp PG_DN, &none,          &none,         &none,         P_SF4_BUT,     &molock
+                            &molock,      &none,         &none,         &none,         &none,          &kp END,     &kp PG_DN, &none,          &none,         &none,         &none,         &molock
       )>;
       sensor-bindings = <&mouscrl SCRLDN SCRLUP &inc_dec_kp LS(LA(C_VOL_UP)) LS(LA(C_VOL_DN))>;
     };
