@@ -286,10 +286,7 @@ $ west build -d build/rolio-left \
 ```
 
 If you make any modifications to the keymap, regenerate the layout SVGs used in
-the documentation. The script passes `-DUSE_MOLOCK=1` to `keymap-drawer` so the
-universal `&molock` key shows up annotated in the rendered images (it has no
-effect on the firmware build itself — `&molock` is always available there).
-Install `keymap-drawer` first (one-time):
+the documentation. Install `keymap-drawer` first (one-time):
 
 ```sh
 $ pipx install keymap-drawer==0.23.0

@@ -50,7 +50,6 @@ parse_config:
   # generation
   zmk_preamble: |
     #define KEYMAP_DRAWER
-    #define USE_MOLOCK
     #define MOVE_LEFT 1
     #define MOVE_DOWN 2
     #define MOVE_UP 3
