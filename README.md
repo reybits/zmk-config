@@ -5,39 +5,46 @@
 
 > [!NOTE]
 > **Fork of [Townk/zmk-config](https://github.com/Townk/zmk-config).** The
-> base layout and the master-layout-plus-adapter idea come from there. The
-> fork has diverged enough that it's worth listing the substantive changes:
+> base layout and the master-layout-plus-adapter idea come from there. What
+> differs from the original:
 >
-> - **Built against upstream ZMK on Zephyr 4.1.** The original pinned a
->   personal fork (`Townk/zmk@mousemove-molock`) on Zephyr 3.5. CI now
->   builds against `zmkfirmware/zmk@main` for `nice_nano//zmk`.
-> - **Standalone `&molock` behavior module** at the repo root, riding on
->   upstream's first-class layer-locking API (PR #2717) instead of carrying
->   a patch inside the ZMK source tree.
-> - **Vendored shields.** `boards/shields/{rolio,vista508}/` live in-repo,
->   no longer pulled from `Townk/zmk-rolio-shield`.
-> - **Vista508 widgets ported to LVGL 9.** Includes the load-bearing
->   `CONFIG_ZMK_DISPLAY_DEDICATED_THREAD_STACK_SIZE=8192` — without it the
->   display thread overflows its stack inside LVGL 9's layer/draw chain
->   and the keyboard never advertises over BLE or enumerates over USB.
-> - **Lily58 support removed** (unowned by this maintainer).
-> - **Rolio's Buttons layer** moved to the dedicated inner-thumb keys
->   (Corne keeps the Z/`/` hold-tap variant since it lacks the extra
->   thumb positions).
-> - **Layout deltas vs. upstream prose**: `` ` `` ↔ `⇥` swap on the base
->   alpha row; homerow mod order is `⌘ ⌥ ^ ⇧` pinky-to-index on both
->   hands; Numbers layer swaps `⏎` and `⇥`; Navigation and Mouse right-hand
->   bindings shifted one column inward; new innermost-homerow combo emits `CAPS_LOCK`
->   (used for the macOS PL ↔ EN input-source toggle).
-> - **Base-layer thumb cluster reshuffled.** Enter and Backspace are on
->   opposite hands (Enter on the left thumb, Backspace on the right
->   thumb with the Shift → ⌦ morph following it). The Symbols hold
->   moved off the innermost left thumb onto the position next to it,
->   so a sustained hold no longer needs the thumb to curl all the way
->   inward. Mouse and Navigation activation swapped within the left
->   thumb — Navigation via a plain momentary key at the middle-left
->   thumb, Mouse via a hold-tap on the innermost left thumb (Esc is the
->   tap face).
+> **Firmware and hardware**
+>
+> - **Upstream ZMK on Zephyr 4.1**, pinned to a commit on ZMK's `main` and
+>   built for `nice_nano//zmk`. The original used a personal ZMK fork
+>   (`Townk/zmk@mousemove-molock`) on Zephyr 3.5.
+> - **`&molock` is a module in this repo**, built on upstream's layer
+>   locking (ZMK PR #2717) instead of a patch to ZMK. It locks the topmost
+>   active layer rather than every held one.
+> - **Shields live in the repo** (`boards/shields/{rolio,vista508}/`)
+>   instead of coming from `Townk/zmk-rolio-shield`. The Vista508's Sharp
+>   display uses the `zmk-ls0xxvcom-driver` module.
+> - **Vista508 widgets run on LVGL 9.** The central display shows the held
+>   modifiers and a procedural picture instead of a WPM graph. The display
+>   thread needs a larger stack, see `config/rolio.conf`.
+> - **Rolio's battery level** follows a LiPo discharge curve instead of
+>   ZMK's straight-line estimate.
+> - **Rolio runs without ZMK's experimental BLE features**: on Zephyr 4.1
+>   they made the central half hang far more often.
+> - **Boards**: Lily58 is gone, and CI builds Corne only with nice!view.
+>
+> **Layout**
+>
+> - **One way to lock a layer.** A layer key only holds its layer, and
+>   `&molock` on the outer thumb key of the other half locks and unlocks
+>   it. The original also locked layers with a double tap and with `&tog`
+>   keys on the layers.
+> - **Thumbs.** Enter is on the left thumb, Backspace on the right (Shift
+>   makes it Delete). SYM, MOU, MED and NUM are held on Enter, Esc,
+>   Backspace and Space; NAV, FUN, BUT and SYS have keys of their own.
+> - **Corne's thumbs** are the inner three of Rolio's five per half, so
+>   both boards share them. Corne holds BUT on `Z` and `/`, gets SYS from a
+>   combo of both outer thumbs and has no `&molock`.
+> - **Smaller changes**: `` ` `` and `⇥` swapped on the base layer, and `⏎`
+>   and `⇥` on Numbers; homerow mods `⌘ ⌥ ⌃ ⇧` from pinky to index; arrows
+>   and mouse movement one column inward, on `H J K L`; `G`+`H` sends Caps
+>   Lock for input-source switching; the rollers change the volume in
+>   quarter steps on macOS.
 
 This repository contains the ZMK user configuration for all my keyboards that
 use the [ZMK](https://zmk.dev/) firmware.
