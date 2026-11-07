@@ -17,7 +17,8 @@ manifest:
       clone-depth: 1
     - name: zmk-ls0xxvcom-driver
       remote: MickiusMousius
-      revision: main
+      # A commit, not main: a rebuild must not pull in a new display driver.
+      revision: a6b3a6df55129143bdaca9592e903933a41d0dfb
       clone-depth: 1
   self:
     path: config
